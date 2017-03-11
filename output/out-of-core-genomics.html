@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width">
+  <title>Out of Core Genomics</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.1/css/bulma.min.css">
+    <link rel="stylesheet" href="http://arvkevi.github.io/theme/css/main.b86f5cf5.css">
+    <link rel="stylesheet" href="http://arvkevi.github.io/theme/webassets-external/059da6a7ec3bacfaf4304c93a3e7884d_print.css" media="print">
+  <!--[if IE]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+<meta property="og:title" content="Blogging Bioinformatics - Out of Core Genomics">
+  <meta property="og:description" content="from blaze import data, by, join, merge, concat, odo /home/kevin/anaconda3/envs/matrixops/lib/python3.5/site-packages/blaze/server/server.py:17: ExtDeprecationWarning: Importing flask.ext.cors is...">
+<meta property="og:url" content="http://arvkevi.github.io/out-of-core-genomics.html">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body id="index" class="home">
+<header class="hero is-primary">
+  <div class="hero-head">
+    <div class="container">
+      <nav class="nav">
+        <div class="nav-left">
+          <a class="nav-item is-brand title is-3"
+             href="http://arvkevi.github.io/">Blogging Bioinformatics</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<nav class="nav has-shadow is-hidden-print">
+  <div class="container">
+    <div class="nav-center"></div>
+    <span id="navToggle" class="nav-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+    <div id="navMenu" class="nav-right nav-menu">
+          <a class="nav-item is-tab is-active"
+             href="http://arvkevi.github.io/category/misc.html">misc</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="section columns">
+    <div class="column is-three-quarters-desktop is-two-thirds-tablet">
+<section id="content" class="body">
+  <article>
+    <h1 class="title">
+      <a href="http://arvkevi.github.io/out-of-core-genomics.html" rel="bookmark"
+         title="Permalink to Out of Core Genomics">Out of Core Genomics</a></h1>
+<footer class="post-info">
+  <abbr class="published" title="2017-01-27T00:00:00-05:00">
+    Published <span class="is-info">Fri 27 January 2017</span>
+    in <a href="http://arvkevi.github.io/category/misc.html">misc</a>
+  </abbr>
+
+    <p class="author">
+      <em>by           <a class="url fn" href="http://arvkevi.github.io/author/kevin-arvai.html">Kevin Arvai</a>
+</em>
+    </p>
+  
+</footer>    <div class="section"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blaze</span> <span class="kn">import</span> <span class="n">data</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">merge</span><span class="p">,</span> <span class="n">concat</span><span class="p">,</span> <span class="n">odo</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">kevin</span><span class="o">/</span><span class="n">anaconda3</span><span class="o">/</span><span class="n">envs</span><span class="o">/</span><span class="n">matrixops</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="o">.</span><span class="mi">5</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">blaze</span><span class="o">/</span><span class="n">server</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">17</span><span class="p">:</span> <span class="n">ExtDeprecationWarning</span><span class="p">:</span> <span class="n">Importing</span> <span class="n">flask</span><span class="o">.</span><span class="n">ext</span><span class="o">.</span><span class="n">cors</span> <span class="ow">is</span> <span class="n">deprecated</span><span class="p">,</span> <span class="n">use</span> <span class="n">flask_cors</span> <span class="n">instead</span><span class="o">.</span>
+  <span class="kn">from</span> <span class="nn">flask.ext.cors</span> <span class="kn">import</span> <span class="n">cross_origin</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">dask</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">dask.dataframe</span> <span class="kn">as</span> <span class="nn">dd</span>
+<span class="kn">from</span> <span class="nn">dask</span> <span class="kn">import</span> <span class="n">delayed</span><span class="p">,</span> <span class="n">multiprocessing</span><span class="p">,</span> <span class="n">threaded</span>
+<span class="c1">#from distributed import Client</span>
+<span class="kn">from</span> <span class="nn">chest</span> <span class="kn">import</span> <span class="n">Chest</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">dir23gt</span> <span class="o">=</span> <span class="s1">&#39;/media/sf_ubuntuVbox/opensnp_datadump.current/gt23/&#39;</span>
+<span class="c1">#!!find -type f -exec sh -c &quot;file {} | grep text &gt;/dev/null&quot; \; -print</span>
+<span class="n">allFiles</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">dir23gt</span> <span class="o">+</span> <span class="s2">&quot;/*.txt&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">allFiles</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>&#39;/media/sf_ubuntuVbox/opensnp_datadump.current/gt23/user855_file425_yearofbirth_unknown_sex_unknown.23andme.txt&#39;
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">gts_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rsid&#39;</span><span class="p">])</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#find = re.compile(r&quot;(.+?)(?=_)&quot;)</span>
+<span class="n">find</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">r&quot;user([0-9]+)(?=_)&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<h2>try to join the dataframes</h2>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fastparquet</span> <span class="kn">import</span> <span class="n">write</span><span class="p">,</span> <span class="n">ParquetFile</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">allFiles</span><span class="p">:</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+    <span class="c1">#userid = find.match(fname).group(0)</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;user(\d+)&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+    <span class="n">userid</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> 
+             <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> 
+             <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> 
+             <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+             <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
+             <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rsid&#39;</span><span class="p">,</span> <span class="n">userid</span><span class="p">],</span>
+             <span class="n">error_bad_lines</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+             <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;rsid&#39;</span><span class="p">:</span><span class="nb">object</span><span class="p">,</span>
+                    <span class="n">userid</span><span class="p">:</span><span class="nb">object</span><span class="p">},</span>
+                     <span class="n">index_col</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rsid&#39;</span><span class="p">]</span>
+             <span class="p">)</span>
+    <span class="n">write</span><span class="p">(</span><span class="s1">&#39;/media/sf_ubuntuVbox/opensnp_datadump.current/gt23hdf5/{}.parquet&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">userid</span><span class="p">),</span> <span class="n">df</span> <span class="p">,</span><span class="n">file_scheme</span><span class="o">=</span><span class="s1">&#39;hive&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">ParquetFile</span><span class="p">(</span><span class="s1">&#39;/media/sf_ubuntuVbox/opensnp_datadump.current/gt23test_hdf5/4000.parquet&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rsid</th>
+      <th>4000</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>rs12564807</td>
+      <td>AA</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>rs3131972</td>
+      <td>GG</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>rs148828841</td>
+      <td>CC</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>rs12124819</td>
+      <td>AG</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>rs115093905</td>
+      <td>GG</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># CHEST</span>
+<span class="n">cache</span> <span class="o">=</span> <span class="n">Chest</span><span class="p">(</span> <span class="n">available_memory</span><span class="o">=</span><span class="mi">3000000000</span><span class="p">)</span> <span class="c1"># Uses temporary file. Deletes on garbage collection</span>
+<span class="c1">#cache = Chest(path=&#39;/path/to/dir&#39;, available_memory=8e9)  # Use 8GB</span>
+<span class="n">dask</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">)</span>  <span class="c1"># sets global state</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>&lt;dask.context.set_options at 0x7f5c9f3622e8&gt;
+</pre></div>
+
+
+<h1>delayed</h1>
+<div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;io.hdf.default_format&#39;</span><span class="p">,</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">store</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">HDFStore</span><span class="p">(</span><span class="s1">&#39;/media/sf_ubuntuVbox/opensnp_datadump.current/gt23hdf5/opensnp.h5&#39;</span><span class="p">,</span> <span class="n">complevel</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># read csv (or chunk) then make it only first two letters</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">clean_gt</span><span class="p">(</span><span class="n">gt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">gt</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">malformed_files</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">allFiles</span><span class="p">:</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;user(\d+)&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+    <span class="n">userid</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1">#userid = find.match(fname).group(0)</span>
+    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rsid&#39;</span><span class="p">,</span> <span class="s1">&#39;genotype&#39;</span><span class="p">],</span> <span class="n">error_bad_lines</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;rsid&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;genotype&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">},</span> <span class="n">chunksize</span><span class="o">=</span><span class="mi">100000</span><span class="p">):</span>
+        <span class="n">chunk</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">userid</span><span class="p">)</span>
+        <span class="n">chunk</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;user&#39;</span><span class="p">,</span><span class="s1">&#39;rsid&#39;</span><span class="p">])</span>
+        <span class="n">chunk</span><span class="p">[</span><span class="s1">&#39;genotype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chunk</span><span class="p">[</span><span class="s1">&#39;genotype&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">chunk</span><span class="p">[</span><span class="s1">&#39;genotype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chunk</span><span class="p">[</span><span class="s1">&#39;genotype&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">clean_gt</span><span class="p">)</span>
+        <span class="n">store</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;opensnp&#39;</span><span class="p">,</span> <span class="n">chunk</span><span class="p">,</span> <span class="n">min_itemsize</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;genotype&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>---------------------------------------------------------------------------
+
+KeyboardInterrupt                         Traceback (most recent call last)
+
+&lt;ipython-input-8-c44a5a04050c&gt; in &lt;module&gt;()
+     10         chunk[&#39;genotype&#39;] = chunk[&#39;genotype&#39;].str.strip()
+     11         chunk[&#39;genotype&#39;] = chunk[&#39;genotype&#39;].apply(clean_gt)
+---&gt; 12         store.append(&#39;opensnp&#39;, chunk, min_itemsize={&#39;genotype&#39;: 2})
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/io/pytables.py in append(self, key, value, format, append, columns, dropna, **kwargs)
+    968         kwargs = self._validate_format(format, kwargs)
+    969         self._write_to_group(key, value, append=append, dropna=dropna,
+--&gt; 970                              **kwargs)
+    971 
+    972     def append_to_multiple(self, d, value, selector, data_columns=None,
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/io/pytables.py in _write_to_group(self, key, value, format, index, append, complib, encoding, **kwargs)
+   1313 
+   1314         # write the object
+-&gt; 1315         s.write(obj=value, append=append, complib=complib, **kwargs)
+   1316 
+   1317         if s.is_table and index:
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/io/pytables.py in write(self, obj, data_columns, **kwargs)
+   4261                 data_columns.insert(0, n)
+   4262         return super(AppendableMultiFrameTable, self).write(
+-&gt; 4263             obj=obj, data_columns=data_columns, **kwargs)
+   4264 
+   4265     def read(self, **kwargs):
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/io/pytables.py in write(self, obj, axes, append, complib, complevel, fletcher32, min_itemsize, chunksize, expectedrows, dropna, **kwargs)
+   3881 
+   3882         # add the rows
+-&gt; 3883         self.write_data(chunksize, dropna=dropna)
+   3884 
+   3885     def write_data(self, chunksize, dropna=False):
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/io/pytables.py in write_data(self, chunksize, dropna)
+   3956                 indexes=[a[start_i:end_i] for a in bindexes],
+   3957                 mask=mask[start_i:end_i] if mask is not None else None,
+-&gt; 3958                 values=[v[start_i:end_i] for v in bvalues])
+   3959 
+   3960     def write_data_chunk(self, rows, indexes, mask, values):
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/io/pytables.py in write_data_chunk(self, rows, indexes, mask, values)
+   4000             if len(rows):
+   4001                 self.table.append(rows)
+-&gt; 4002                 self.table.flush()
+   4003         except Exception as detail:
+   4004             raise TypeError(&quot;tables cannot write this data -&gt; %s&quot; % detail)
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/tables/table.py in flush(self)
+   2902                 self.reindex_dirty()
+   2903 
+-&gt; 2904         super(Table, self).flush()
+   2905 
+   2906     def _g_pre_kill_hook(self):
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/tables/leaf.py in flush(self)
+    723         &quot;&quot;&quot;
+    724 
+--&gt; 725         self._g_flush()
+    726 
+    727     def _f_close(self, flush=True):
+
+
+KeyboardInterrupt:
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">store</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">malformed_files</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">allFiles</span><span class="p">:</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;user(\d+)&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+    <span class="n">userid</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1">#userid = find.match(fname).group(0)</span>
+    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rsid&#39;</span><span class="p">,</span> <span class="s1">&#39;genotype&#39;</span><span class="p">],</span> <span class="n">error_bad_lines</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;rsid&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;genotype&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">},</span> <span class="n">chunksize</span><span class="o">=</span><span class="mi">50000</span><span class="p">):</span>
+        <span class="c1">#chunk[&#39;user&#39;] = int(userid)</span>
+        <span class="n">chunk</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;rsid&#39;</span><span class="p">)</span>
+        <span class="n">chunk</span><span class="p">[</span><span class="s1">&#39;genotype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chunk</span><span class="p">[</span><span class="s1">&#39;genotype&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">chunk</span><span class="p">[</span><span class="s1">&#39;genotype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chunk</span><span class="p">[</span><span class="s1">&#39;genotype&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">clean_gt</span><span class="p">)</span>
+        <span class="n">store</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;user{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">userid</span><span class="p">),</span> <span class="n">chunk</span><span class="p">,</span><span class="n">min_itemsize</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;rsid&#39;</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span><span class="s1">&#39;genotype&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;rsid&#39;</span><span class="p">,</span> <span class="n">data_columns</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>---------------------------------------------------------------------------
+
+KeyError                                  Traceback (most recent call last)
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/io/pytables.py in create_axes(self, axes, obj, validate, nan_rep, data_columns, min_itemsize, **kwargs)
+   3472                 try:
+-&gt; 3473                     b, b_items = by_items.pop(items)
+   3474                     new_blocks.append(b)
+
+
+KeyError: (&#39;rsid&#39;,)
+
+
+During handling of the above exception, another exception occurred:
+
+
+ValueError                                Traceback (most recent call last)
+
+&lt;ipython-input-7-96becf003398&gt; in &lt;module&gt;()
+     10         chunk[&#39;genotype&#39;] = chunk[&#39;genotype&#39;].str.strip()
+     11         chunk[&#39;genotype&#39;] = chunk[&#39;genotype&#39;].apply(clean_gt)
+---&gt; 12         store.append(&#39;user{}&#39;.format(userid), chunk,min_itemsize={&#39;rsid&#39;:15,&#39;genotype&#39;: 2}, index=&#39;rsid&#39;, data_columns=True)
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/io/pytables.py in append(self, key, value, format, append, columns, dropna, **kwargs)
+    968         kwargs = self._validate_format(format, kwargs)
+    969         self._write_to_group(key, value, append=append, dropna=dropna,
+--&gt; 970                              **kwargs)
+    971 
+    972     def append_to_multiple(self, d, value, selector, data_columns=None,
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/io/pytables.py in _write_to_group(self, key, value, format, index, append, complib, encoding, **kwargs)
+   1313 
+   1314         # write the object
+-&gt; 1315         s.write(obj=value, append=append, complib=complib, **kwargs)
+   1316 
+   1317         if s.is_table and index:
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/io/pytables.py in write(self, obj, axes, append, complib, complevel, fletcher32, min_itemsize, chunksize, expectedrows, dropna, **kwargs)
+   3851         self.create_axes(axes=axes, obj=obj, validate=append,
+   3852                          min_itemsize=min_itemsize,
+-&gt; 3853                          **kwargs)
+   3854 
+   3855         for a in self.axes:
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/io/pytables.py in create_axes(self, axes, obj, validate, nan_rep, data_columns, min_itemsize, **kwargs)
+   3478                         &quot;cannot match existing table structure for [%s] on &quot;
+   3479                         &quot;appending data&quot; % &#39;,&#39;.join(pprint_thing(item) for
+-&gt; 3480                                                     item in items))
+   3481             blocks = new_blocks
+   3482             blk_items = new_blk_items
+
+
+ValueError: cannot match existing table structure for [rsid] on appending data
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">store</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#df = pd.read_hdf(&#39;/media/sf_ubuntuVbox/opensnp_datadump.current/gt23test_hdf5/opensnp_test.h5&#39;, &#39;opensnp&#39;)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_hdf</span><span class="p">(</span><span class="s1">&#39;/media/sf_ubuntuVbox/opensnp_datadump.current/gt23test_hdf5/opensnp_test.h5&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;opensnp&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;rs12564807&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;rsid&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="s1">&#39;genotype&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>AA    5
+Name: genotype, dtype: int64
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">lzdfs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">uids</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">allFiles</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="c1">#userid = find.match(fname).group(0)</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;user(\d+)&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+        <span class="n">userid</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">delayed</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">)(</span><span class="n">fn</span><span class="p">,</span> 
+                 <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> 
+                 <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> 
+                 <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
+                 <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rsid&#39;</span><span class="p">,</span> <span class="s1">&#39;gt&#39;</span><span class="p">],</span>
+                 <span class="n">error_bad_lines</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;rsid&#39;</span><span class="p">:</span><span class="nb">object</span><span class="p">,</span>
+                        <span class="s1">&#39;gt&#39;</span><span class="p">:</span><span class="nb">object</span><span class="p">},</span>
+                 <span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">delayed</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">uid</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">userid</span><span class="p">))</span>
+        <span class="c1">#df = delayed(df.set_index)([userid,&#39;rsid&#39;])</span>
+        <span class="c1">#gts_df = delayed(gts_df.join)(df, how=&#39;outer&#39;, rsuffix=&#39;_2&#39;)</span>
+        <span class="n">uids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">userid</span><span class="p">)</span>
+        <span class="n">lzdfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">malformed_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="k">continue</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">from_delayed</span><span class="p">(</span><span class="n">lzdfs</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">a</span><span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="s1">&#39;rsid&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;rs12564807&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</pre></div>
+
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rsid</th>
+      <th>gt</th>
+      <th>uid</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>rs12564807</td>
+      <td>AA</td>
+      <td>4009</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>rs12564807</td>
+      <td>AA</td>
+      <td>4009</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>rs12564807</td>
+      <td>AA</td>
+      <td>4009</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>rs12564807</td>
+      <td>AA</td>
+      <td>4009</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>rs12564807</td>
+      <td>AA</td>
+      <td>4009</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">a</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;rs12564807&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>---------------------------------------------------------------------------
+
+TypeError                                 Traceback (most recent call last)
+
+&lt;ipython-input-35-3ab8ed8cd6e2&gt; in &lt;module&gt;()
+----&gt; 1 a.loc[&#39;rs12564807&#39;].compute()
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/dask/base.py in compute(self, **kwargs)
+     76             Extra keywords to forward to the scheduler ``get`` function.
+     77         &quot;&quot;&quot;
+---&gt; 78         return compute(self, **kwargs)[0]
+     79 
+     80     @classmethod
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/dask/base.py in compute(*args, **kwargs)
+    176         dsk = merge(var.dask for var in variables)
+    177     keys = [var._keys() for var in variables]
+--&gt; 178     results = get(dsk, keys, **kwargs)
+    179 
+    180     results_iter = iter(results)
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/dask/threaded.py in get(dsk, result, cache, num_workers, **kwargs)
+     67     results = get_async(pool.apply_async, len(pool._pool), dsk, result,
+     68                         cache=cache, get_id=_thread_get_id,
+---&gt; 69                         **kwargs)
+     70 
+     71     # Cleanup pools associated to dead threads
+
+
+/home/kevin/anaconda3/lib/python3.5/site-packages/dask/async.py in get_async(apply_async, num_workers, dsk, result, cache, get_id, raise_on_exception, rerun_exceptions_locally, callbacks, dumps, loads, **kwargs)
+    500                     _execute_task(task, data)  # Re-execute locally
+    501                 else:
+--&gt; 502                     raise(remote_exception(res, tb))
+    503             state[&#39;cache&#39;][key] = res
+    504             finish_task(dsk, key, state, results, keyorder.get)
+
+
+TypeError: cannot use label indexing with a null key
+
+Traceback
+---------
+  File &quot;/home/kevin/anaconda3/lib/python3.5/site-packages/dask/async.py&quot;, line 268, in execute_task
+    result = _execute_task(task, data)
+  File &quot;/home/kevin/anaconda3/lib/python3.5/site-packages/dask/async.py&quot;, line 249, in _execute_task
+    return func(*args2)
+  File &quot;/home/kevin/anaconda3/lib/python3.5/site-packages/dask/dataframe/core.py&quot;, line 2777, in apply_and_enforce
+    df = func(*args, **kwargs)
+  File &quot;/home/kevin/anaconda3/lib/python3.5/site-packages/dask/dataframe/methods.py&quot;, line 32, in try_loc
+    return df.head(0).loc[:, cindexer]
+  File &quot;/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/core/indexing.py&quot;, line 1309, in __getitem__
+    return self._getitem_tuple(key)
+  File &quot;/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/core/indexing.py&quot;, line 795, in _getitem_tuple
+    return self._getitem_lowerdim(tup)
+  File &quot;/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/core/indexing.py&quot;, line 921, in _getitem_lowerdim
+    section = self._getitem_axis(key, axis=i)
+  File &quot;/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/core/indexing.py&quot;, line 1481, in _getitem_axis
+    self._has_valid_type(key, axis)
+  File &quot;/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/core/indexing.py&quot;, line 1410, in _has_valid_type
+    error()
+  File &quot;/home/kevin/anaconda3/lib/python3.5/site-packages/pandas/core/indexing.py&quot;, line 1402, in error
+    raise TypeError(&quot;cannot use label indexing with a null &quot;
+</pre></div>
+
+
+<h1>this works but not on the full set because they don't all have that rs</h1>
+<div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/media/sf_ubuntuVbox/opensnp_datadump.current/gt23/*.txt&#39;</span><span class="p">,</span>
+                 <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> 
+                 <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> 
+                 <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
+                 <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rsid&#39;</span><span class="p">,</span> <span class="s1">&#39;genotype&#39;</span><span class="p">],</span>
+                 <span class="n">error_bad_lines</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;rsid&#39;</span><span class="p">:</span><span class="nb">object</span><span class="p">,</span>
+                        <span class="s1">&#39;genotype&#39;</span><span class="p">:</span><span class="nb">object</span><span class="p">},</span>
+                  <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;rsid&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<h2>dd</h2>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">dask</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">dask.dataframe</span> <span class="kn">as</span> <span class="nn">dd</span>
+<span class="kn">from</span> <span class="nn">dask</span> <span class="kn">import</span> <span class="n">delayed</span><span class="p">,</span> <span class="n">multiprocessing</span><span class="p">,</span> <span class="n">threaded</span>
+<span class="c1">#from distributed import Client</span>
+<span class="kn">from</span> <span class="nn">chest</span> <span class="kn">import</span> <span class="n">Chest</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">psutil</span>
+<span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">total</span> <span class="o">/</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">/</span> <span class="mi">10</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>127104409.6
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">ddf</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/media/sf_ubuntuVbox/opensnp_datadump.current/gt23/*.txt&#39;</span><span class="p">,</span>
+                 <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> 
+                 <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> 
+                 <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
+                 <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rsid&#39;</span><span class="p">,</span> <span class="s1">&#39;genotype&#39;</span><span class="p">],</span>
+                 <span class="n">error_bad_lines</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;rsid&#39;</span><span class="p">:</span><span class="nb">object</span><span class="p">,</span>
+                        <span class="s1">&#39;genotype&#39;</span><span class="p">:</span><span class="nb">object</span><span class="p">},</span>
+                 <span class="n">blocksize</span><span class="o">=</span><span class="mi">127104409</span><span class="p">)</span><span class="c1">#.set_index(&#39;rsid&#39;)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">ddf</span> <span class="o">=</span> <span class="n">ddf</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;rsid&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">dd</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s1">&#39;/media/sf_ubuntuVbox/opensnp_datadump.current/gt23hdf5/&#39;</span><span class="p">,</span> <span class="n">ddf</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>part.20.parquet
+part.116.parquet
+part.237.parquet
+part.247.parquet
+part.383.parquet
+part.424.parquet
+part.434.parquet
+part.465.parquet
+part.483.parquet
+part.602.parquet
+part.820.parquet
+part.868.parquet
+part.1050.parquet
+part.1236.parquet
+part.1331.parquet
+part.1435.parquet
+part.1603.parquet
+part.1737.parquet
+part.1780.parquet
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">snp1</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">&#39;/media/sf_ubuntuVbox/opensnp_datadump.current/gt23hdf5/&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;rsid&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="n">time</span> <span class="n">snp1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;rs1333525&#39;</span><span class="p">][</span><span class="s1">&#39;genotype&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>CPU times: user 2.44 s, sys: 56 ms, total: 2.5 s
+Wall time: 2.9 s
+
+
+
+
+
+CC    1625
+CT     277
+TT      13
+Name: genotype, dtype: int64
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#snp1[&#39;genotype&#39;].value_counts().compute()</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>---------------------------------------------------------------------------
+
+KeyboardInterrupt                         Traceback (most recent call last)
+
+&lt;ipython-input-26-2adea5bbfa17&gt; in &lt;module&gt;()
+----&gt; 1 snp1[&#39;genotype&#39;].value_counts().compute()
+
+
+/home/kevin/anaconda3/envs/matrixops/lib/python3.5/site-packages/dask-0.13.0+11.gc68f277b-py3.5.egg/dask/base.py in compute(self, **kwargs)
+     77             Extra keywords to forward to the scheduler ``get`` function.
+     78         &quot;&quot;&quot;
+---&gt; 79         return compute(self, **kwargs)[0]
+     80 
+     81     @classmethod
+
+
+/home/kevin/anaconda3/envs/matrixops/lib/python3.5/site-packages/dask-0.13.0+11.gc68f277b-py3.5.egg/dask/base.py in compute(*args, **kwargs)
+    194     else:
+    195         dsk, keys = _extract_graph_and_keys(variables)
+--&gt; 196     results = get(dsk, keys, **kwargs)
+    197 
+    198     results_iter = iter(results)
+
+
+/home/kevin/anaconda3/envs/matrixops/lib/python3.5/site-packages/dask-0.13.0+11.gc68f277b-py3.5.egg/dask/threaded.py in get(dsk, result, cache, num_workers, **kwargs)
+     74     results = get_async(pool.apply_async, len(pool._pool), dsk, result,
+     75                         cache=cache, get_id=_thread_get_id,
+---&gt; 76                         **kwargs)
+     77 
+     78     # Cleanup pools associated to dead threads
+
+
+/home/kevin/anaconda3/envs/matrixops/lib/python3.5/site-packages/dask-0.13.0+11.gc68f277b-py3.5.egg/dask/async.py in get_async(apply_async, num_workers, dsk, result, cache, get_id, raise_on_exception, rerun_exceptions_locally, callbacks, dumps, loads, **kwargs)
+    489         # Main loop, wait on tasks to finish, insert new ones
+    490         while state[&#39;waiting&#39;] or state[&#39;ready&#39;] or state[&#39;running&#39;]:
+--&gt; 491             key, res_info = queue.get()
+    492             res, tb, worker_id = loads(res_info)
+    493             if isinstance(res, BaseException):
+
+
+/home/kevin/anaconda3/envs/matrixops/lib/python3.5/queue.py in get(self, block, timeout)
+    162             elif timeout is None:
+    163                 while not self._qsize():
+--&gt; 164                     self.not_empty.wait()
+    165             elif timeout &lt; 0:
+    166                 raise ValueError(&quot;&#39;timeout&#39; must be a non-negative number&quot;)
+
+
+/home/kevin/anaconda3/envs/matrixops/lib/python3.5/threading.py in wait(self, timeout)
+    291         try:    # restore state no matter what (e.g., KeyboardInterrupt)
+    292             if timeout is None:
+--&gt; 293                 waiter.acquire()
+    294                 gotit = True
+    295             else:
+
+
+KeyboardInterrupt:
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<h2>In memory solution -- runs out of memory</h2>
+<div class="highlight"><pre><span></span><span class="n">testholder</span> <span class="o">=</span> <span class="p">[]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">find</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">r&quot;(.+?)(?=_)&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">file_</span> <span class="ow">in</span> <span class="n">allFiles</span><span class="p">:</span>
+
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_</span><span class="p">)</span>
+    <span class="n">userid</span> <span class="o">=</span> <span class="n">find</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_</span><span class="p">,</span> 
+                     <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> 
+                     <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> 
+                     <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
+                     <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rsid&#39;</span><span class="p">,</span> <span class="s1">&#39;genotype&#39;</span><span class="p">],</span>
+                     <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;rsid&#39;</span><span class="p">:</span><span class="nb">object</span><span class="p">,</span>
+                            <span class="s1">&#39;genotype&#39;</span><span class="p">:</span><span class="nb">object</span><span class="p">},</span>
+                     <span class="n">index_col</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rsid&#39;</span><span class="p">]</span>
+                        <span class="p">)</span>
+
+        <span class="c1">#testholder.append(df)</span>
+        <span class="c1">#gts_df = gts_df.join(df,how=&#39;outer&#39;,rsuffix=&#39;_2&#39;)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>Exception
+user3161_file2046_yearofbirth_unknown_sex_unknown.23andme.txt
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="nb">reduce</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">df_final</span> <span class="o">=</span> <span class="nb">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">left</span><span class="p">,</span><span class="n">right</span><span class="p">:</span> <span class="n">dd</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">left</span><span class="p">,</span><span class="n">right</span><span class="p">,</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">),</span> <span class="n">testholder</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>---------------------------------------------------------------------------
+
+AttributeError                            Traceback (most recent call last)
+
+&lt;ipython-input-23-938f4b179b66&gt; in &lt;module&gt;()
+----&gt; 1 df_final = reduce(lambda left,right: dd.join(left,right,how=&#39;outer&#39;), testholder)
+
+
+&lt;ipython-input-23-938f4b179b66&gt; in &lt;lambda&gt;(left, right)
+----&gt; 1 df_final = reduce(lambda left,right: dd.join(left,right,how=&#39;outer&#39;), testholder)
+
+
+AttributeError: module &#39;dask.dataframe&#39; has no attribute &#39;join&#39;
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">df_final</span><span class="o">.</span><span class="n">compute</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">bigdf</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="o">*</span><span class="n">testholder</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>---------------------------------------------------------------------------
+
+TypeError                                 Traceback (most recent call last)
+
+&lt;ipython-input-17-e21fd18736ff&gt; in &lt;module&gt;()
+----&gt; 1 bigdf = dd.merge(*testholder, how=&#39;outer&#39;).compute
+
+
+TypeError: merge() got multiple values for argument &#39;how&#39;
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">gts_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user4000</th>
+      <th>user4001</th>
+      <th>user4003</th>
+      <th>user4004</th>
+      <th>user4006</th>
+      <th>user4009</th>
+    </tr>
+    <tr>
+      <th>rsid</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>i1000009</th>
+      <td>G</td>
+      <td>G</td>
+      <td>G</td>
+      <td>G</td>
+      <td>G</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>i2000003</th>
+      <td>GG</td>
+      <td>--</td>
+      <td>GG</td>
+      <td>GG</td>
+      <td>GG</td>
+      <td>GG</td>
+    </tr>
+    <tr>
+      <th>i3000001</th>
+      <td>II</td>
+      <td>II</td>
+      <td>II</td>
+      <td>II</td>
+      <td>II</td>
+      <td>II</td>
+    </tr>
+    <tr>
+      <th>i3000002</th>
+      <td>G</td>
+      <td>G</td>
+      <td>--</td>
+      <td>G</td>
+      <td>--</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>i3000003</th>
+      <td>G</td>
+      <td>G</td>
+      <td>--</td>
+      <td>G</td>
+      <td>--</td>
+      <td>G</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="highlight"><pre><span></span><span class="n">gts_df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>(1043936, 6)
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;gts_df.p&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="c1"># Pickle the &#39;data&#39; dictionary using the highest protocol available.</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">gts_df</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">pickle</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div></div>
+
+  </article>
+</section>
+    </div>
+
+    <div class="column is-one-quarter-desktop is-one-third-tablet is-hidden-print">
+      <aside class="menu">
+          <p class="menu-label">blogroll</p>
+          <ul class="menu-list">
+              <li><a href="http://getpelican.com/">
+                <span class="icon is-small"><i class="fa fa-globe fa-fw"></i></span>
+                <span class="link-text">Pelican</span>
+              </a></li>
+              <li><a href="http://python.org/">
+                <span class="icon is-small"><i class="fa fa-globe fa-fw"></i></span>
+                <span class="link-text">Python.org</span>
+              </a></li>
+              <li><a href="http://jinja.pocoo.org/">
+                <span class="icon is-small"><i class="fa fa-globe fa-fw"></i></span>
+                <span class="link-text">Jinja2</span>
+              </a></li>
+              <li><a href="#">
+                <span class="icon is-small"><i class="fa fa-globe fa-fw"></i></span>
+                <span class="link-text">You can modify those links in your config file</span>
+              </a></li>
+          </ul>
+<p class="menu-label">social</p>
+<ul class="menu-list">
+    <li><a href="#">
+      <span class="icon is-small">
+          <i class="fa fa-globe fa-fw"></i>
+      </span>
+      <span class="link-text">You can add links in your config file</span>
+    </a></li>
+    <li><a href="#">
+      <span class="icon is-small">
+          <i class="fa fa-globe fa-fw"></i>
+      </span>
+      <span class="link-text">Another social link</span>
+    </a></li>
+</ul>      </aside>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container has-text-centered">
+    <p>Theme by <a href="http://hello.jonrshar.pe">Jonathan Sharpe</a>
+      | <span class="icon is-small"><i class="fa fa-html5"></i></span> HTML 5
+      | <span class="icon is-small"><i class="fa fa-css3"></i></span> CSS 3
+    </p>
+  </div>
+</footer>
+
+<script type="text/javascript">
+  document.getElementById('navToggle').addEventListener('click', function () {
+    var nav = document.getElementById('navMenu');
+    var className = nav.getAttribute('class');
+    if (className == 'nav-right nav-menu') {
+      nav.className = 'nav-right nav-menu is-active';
+    } else {
+      nav.className = 'nav-right nav-menu';
+    }
+  });
+</script>
+</body>
+</html>
