@@ -34,10 +34,22 @@ SOCIAL = (('linkedin', 'https://www.linkedin.com/in/kevinarvai'),
 
 DEFAULT_PAGINATION = 10
 
-MARKUP = ('md', 'ipynb')
+#MARKUP = ('md', 'ipynb')
+MARKUP = ['md']
 
 PLUGIN_PATHS = ['./plugins', './plugins/pelican-plugins']
-PLUGINS = ['assets', 'sitemap', 'share_post', 'ipynb.markup', 'i18n_subsites']
+#PLUGINS = ['assets', 'sitemap', 'share_post', 'ipynb.markup', 'i18n_subsites']
+PLUGINS = [
+    'assests', 
+    'summary',       # auto-summarizing articles
+    'feed_summary',  # use summaries for RSS, not full articles
+    'ipynb.liquid',  # for embedding notebooks
+    'liquid_tags.img',  # embedding images
+    'liquid_tags.video',  # embedding videos
+    'liquid_tags.include_code',  # including code blocks
+    'liquid_tags.literal'
+]
+
 
 THEME = "./themes/pelican-twitchy"
 
