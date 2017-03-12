@@ -4,8 +4,8 @@ from __future__ import unicode_literals
 
 AUTHOR = 'Kevin Arvai'
 SITENAME = 'Blogging Bioinformatics'
-#SITEURL = 'http://arvkevi.github.io'
-SITEURL = 'http://localhost:8000'
+SITEURL = 'http://arvkevi.github.io'
+#SITEURL = 'http://localhost:8000'
 
 PATH = 'content'
 
@@ -27,28 +27,57 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
          ('You can modify those links in your config file', '#'),)
 
 # Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
+SOCIAL = (('linkedin', 'https://www.linkedin.com/in/kevinarvai'),
+          ('github', 'https://github.com/arvkevi'),
+          ('twitter', 'https://twitter.com/arvkevi'),
+          )
 
 DEFAULT_PAGINATION = 10
 
 MARKUP = ('md', 'ipynb')
 
 PLUGIN_PATHS = ['./plugins', './plugins/pelican-plugins']
-PLUGINS = ['assets', 'sitemap', 'disqus_static', 'share_post', 'ipynb.markup']
+PLUGINS = ['assets', 'sitemap', 'share_post', 'ipynb.markup', 'i18n_subsites']
 
-THEME = "./themes/pelican-blue"
+THEME = "./themes/pelican-twitchy"
 
-TWITTER_USERNAME = 'arvkevi'
-GITHUB_USERNAME = 'arvkevi'
-STACKOVERFLOW_ADDRESS = 'http://stackoverflow.com/users/'
+# IPYNB
+#IPYNB_IGNORE_CSS=False
+IGNORE_FILES = ['.ipynb_checkpoints']
+IPYNB_USE_META_SUMMARY=True
+
+
+### TWITCHY
+
+
+# COLORS
+BOOTSTRAP_THEME = "spacelab"
+PYGMENTS = "native"
+#TYPOGRIFY = True
+
+SHARE = False
+HIDE_SITENAME = True
+
+
+DISQUS_SITENAME="arvkevi.github.io"
+DISQUS_LOAD_LATER=False
+
+# GOOGLE
+GOOGLE_ANALYTICS = "UA-66112939-4" 
+#GOOGLE_ANALYTICS_UNIVERSAL = "UA-66112939-4"
+#GOOGLE_ANALYTICS_UNIVERSAL_PROPERTY = 4
+
+
+### TWITCHY ^^^
+
+#JINJA_EXTENSIONS = ['jinja2.ext.i18n']
+
 SHOW_ARCHIVES = True
 SHOW_FEED = False  # Need to address large feeds
 
 ENABLE_MATHJAX = True
 
 STATIC_PATHS = ['images', 'figures', 'videos', 'downloads', 'favicon.ico']
-
 
 # Uncomment following line if you want document-relative URLs when developing
 RELATIVE_URLS = True
