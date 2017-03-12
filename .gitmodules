@@ -3,7 +3,7 @@
 	url = https://github.com/ingwinlu/pelican-twitchy.git
 [submodule "plugins/ipynb"]
 	path = plugins/ipynb
-	url = git://github.com/danielfrg/pelican-ipynb.git
+	url = https://github.com/danielfrg/pelican-ipynb.git
 [submodule "plugins/pelican-plugins"]
 	path = plugins/pelican-plugins
-	url = git://github.com/getpelican/pelican-plugins
+	url = https://github.com/getpelican/pelican-plugins
