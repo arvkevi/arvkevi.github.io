@@ -53,7 +53,7 @@ PLUGINS = [
 ]
 
 
-NOTEBOOK_DIR = 'notebooks'
+NOTEBOOK_DIR = 'downloads/notebooks'
 
 THEME = "./themes/pelican-twitchy"
 
