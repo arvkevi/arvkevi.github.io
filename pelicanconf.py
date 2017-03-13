@@ -42,7 +42,8 @@ PLUGINS = [
     'assets', 
     'summary',       # auto-summarizing articles
     'feed_summary',  # use summaries for RSS, not full articles
-    'ipynb.markup'
+    'ipynb.markup',
+    'ipynb.liquid'
 ]
 
 
