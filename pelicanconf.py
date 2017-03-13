@@ -48,16 +48,19 @@ PLUGINS = [
     'liquid_tags.youtube', 
     'liquid_tags.vimeo',
     'liquid_tags.include_code',
-    'liquid_tags.notebook'
+    'liquid_tags.notebook',
+    'liquid_tags.literal'
 ]
 
+
+NOTEBOOK_DIR = 'notebooks'
 
 THEME = "./themes/pelican-twitchy"
 
 # IPYNB
 #IPYNB_IGNORE_CSS=False
 IGNORE_FILES = ['.ipynb_checkpoints']
-IPYNB_USE_META_SUMMARY=True
+#IPYNB_USE_META_SUMMARY=True
 
 
 ### TWITCHY

@@ -6,4 +6,4 @@ Tags: genomics, dask, parquet, bioinformatics
 Author: Kevin Arvai
 Summary: Out of core computation using dask and parquet.
 
-{% notebook notebooks/daskgenomics_test.ipynb %}
+{% notebook daskgenomics_test.ipynb %}
