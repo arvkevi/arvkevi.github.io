@@ -1,8 +1,0 @@
-Title: Out of Core Genomics
-Slug: Out_of_Core_Genomics
-Date: 2017-01-27
-Category: Computation
-Tags: genomics, pandas, dask, parquet, python
-Author: Kevin Arvai
-Summary: Using Dask and Parquet to work with large genomic datasets on your laptop.
-
