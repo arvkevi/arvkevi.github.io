@@ -4,8 +4,8 @@ from __future__ import unicode_literals
 
 AUTHOR = 'Kevin Arvai'
 SITENAME = 'Blogging Bioinformatics'
-SITEURL = 'http://arvkevi.github.io'
-#SITEURL = 'http://localhost:8000'
+#SITEURL = 'http://arvkevi.github.io'
+SITEURL = 'http://localhost:8000'
 
 PATH = 'content'
 
@@ -34,20 +34,15 @@ SOCIAL = (('linkedin', 'https://www.linkedin.com/in/kevinarvai'),
 
 DEFAULT_PAGINATION = 10
 
-#MARKUP = ('md', 'ipynb')
-MARKUP = ['md']
+MARKUP = ('md', 'ipynb')
+#MARKUP = ['md']
 
-PLUGIN_PATHS = ['./plugins', './plugins/pelican-plugins']
-#PLUGINS = ['assets', 'sitemap', 'share_post', 'ipynb.markup', 'i18n_subsites']
+PLUGIN_PATHS = ['./plugins/pelican-plugins', './plugins']
 PLUGINS = [
-    'assests', 
+    'assets', 
     'summary',       # auto-summarizing articles
     'feed_summary',  # use summaries for RSS, not full articles
-    'ipynb.liquid',  # for embedding notebooks
-    'liquid_tags.img',  # embedding images
-    'liquid_tags.video',  # embedding videos
-    'liquid_tags.include_code',  # including code blocks
-    'liquid_tags.literal'
+    'ipynb.markup'
 ]
 
 
@@ -92,4 +87,4 @@ ENABLE_MATHJAX = True
 STATIC_PATHS = ['images', 'figures', 'videos', 'downloads', 'favicon.ico']
 
 # Uncomment following line if you want document-relative URLs when developing
-RELATIVE_URLS = True
+#RELATIVE_URLS = True
