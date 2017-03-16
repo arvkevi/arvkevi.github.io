@@ -1,9 +1,0 @@
-[submodule "themes/pelican-twitchy"]
-	path = themes/pelican-twitchy
-	url = https://github.com/ingwinlu/pelican-twitchy.git
-[submodule "plugins/ipynb"]
-	path = plugins/ipynb
-	url = https://github.com/danielfrg/pelican-ipynb.git
-[submodule "plugins/pelican-plugins"]
-	path = plugins/pelican-plugins
-	url = https://github.com/getpelican/pelican-plugins.git
