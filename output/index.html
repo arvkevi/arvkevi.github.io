@@ -172,7 +172,7 @@
     <div class="col-lg-9">
             <article>
                 <h2>
-                    <a href="http://localhost:8000/Out_of_core_genomics.html">Out of Core Genomics</a>
+                    <a href="http://localhost:8000/Out_of_Core_Genomics.html">Out of Core Genomics</a>
 <div class="post-info">
     <div class="publish-info-block">
         <small>
@@ -184,12 +184,18 @@
             </span>
             <span class="tags">
                 <i class="fa fa-tags padding-small"></i>
-                <a href="http://localhost:8000/tag/genomics.html">genomics</a> /                 <a href="http://localhost:8000/tag/dask.html">dask</a> /                 <a href="http://localhost:8000/tag/parquet.html">parquet</a> /                 <a href="http://localhost:8000/tag/bioinformatics.html">bioinformatics</a>            </span>
+                <a href="http://localhost:8000/tag/dask.html">dask</a> /                 <a href="http://localhost:8000/tag/parquet.html">parquet</a> /                 <a href="http://localhost:8000/tag/genomics.html">genomics</a>            </span>
         </small>
     </div>
 </div><!-- /.post-info -->                </h2>
                 <div class="summary">
-                    <p>Out of core computation using dask and parquet.</p>
+                    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Motivation for this post originates from my interest in working with <a href="https://opensnp.org/">openSNP</a> data. openSNP is an open-source platform where users upload their genotype data from direct-to-consumer genetics companies like <a href="https://www.23andme.com/">23andMe</a>.  Raw result files are often hundreds of thousandas of records long, each record representing a location in the human genome.  There are over 4,000 raw result files in the openSNP data however, my laptop runs a VirtualBox with only 5GB RAM, which meant I needed to find some clever solutions beyond the standard <a href="">pandas</a>
                 </div>
             </article>
         <div class="btn-more text-right">

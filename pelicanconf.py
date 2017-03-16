@@ -4,8 +4,8 @@ from __future__ import unicode_literals
 
 AUTHOR = 'Kevin Arvai'
 SITENAME = 'Blogging Bioinformatics'
-SITEURL = 'http://arvkevi.github.io'
-#SITEURL = 'http://localhost:8000'
+#SITEURL = 'http://arvkevi.github.io'
+SITEURL = 'http://localhost:8000'
 
 PATH = 'content'
 
@@ -34,26 +34,27 @@ SOCIAL = (('linkedin', 'https://www.linkedin.com/in/kevinarvai'),
 
 DEFAULT_PAGINATION = 10
 
-#MARKUP = ('md', 'ipynb')
-MARKUP = ['md']
+MARKUP = ('md', 'ipynb')
+#MARKUP = ['md']
 
 PLUGIN_PATHS = ['./plugins/pelican-plugins', './plugins']
-PLUGINS = [
-    'assets', 
-    'summary',       # auto-summarizing articles
-    'feed_summary',  # use summaries for RSS, not full articles
-    'ipynb.liquid',
-    'liquid_tags.img', 
-    'liquid_tags.video',
-    'liquid_tags.youtube', 
-    'liquid_tags.vimeo',
-    'liquid_tags.include_code',
-    'liquid_tags.notebook',
-    'liquid_tags.literal'
-]
+PLUGINS = ['assets', 'summary', 'ipynb.markup']
+#PLUGINS = [
+#    'assets', 
+#    'summary',       # auto-summarizing articles
+#    'feed_summary',  # use summaries for RSS, not full articles
+#    'ipynb.liquid',
+#    'liquid_tags.img', 
+#    'liquid_tags.video',
+#    'liquid_tags.youtube', 
+#    'liquid_tags.vimeo',
+#    'liquid_tags.include_code',
+#    'liquid_tags.notebook',
+#    'liquid_tags.literal'
+#]
 
 
-NOTEBOOK_DIR = 'downloads/notebooks'
+#NOTEBOOK_DIR = 'downloads/notebooks'
 
 THEME = "./themes/pelican-twitchy"
 
