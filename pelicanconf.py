@@ -34,8 +34,7 @@ SOCIAL = (('linkedin', 'https://www.linkedin.com/in/kevinarvai'),
 
 DEFAULT_PAGINATION = 10
 
-MARKUP = ('ipynb',)
-#MARKUP = ('md', 'ipynb')
+MARKUP = ('md', 'ipynb')
 #MARKUP = ['md']
 
 PLUGIN_PATHS = ['./plugins/pelican-plugins', './plugins']
