@@ -1003,7 +1003,7 @@ Motivation for this post originates from my interest in working with &lt;a href=
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;openSNP has over 40 GB of genotype &amp; phenotype data stored as text files!&lt;br&gt;
-For the purposes of this demo, the analysis will be limited to only the &lt;strong&gt;23&amp;Me;&lt;/strong&gt; files.  Below are a few shell commands get the raw data, create a directory and extract 23&amp;me; files.&lt;/br&gt;&lt;/p&gt;
+For the purposes of this demo, the analysis will be limited to only the &lt;strong&gt;23&amp;Me;&lt;/strong&gt; files.  Below are a few shell commands to get the raw data, create a directory and extract 23&amp;me; files.&lt;/br&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1012,16 +1012,16 @@ For the purposes of this demo, the analysis will be limited to only the &lt;stro
 &lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;%%sh
-wget https://opensnp.org/data/zip/opensnp_datadump.current.zip
-unzip opensnp_datadump.current.zip
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%sh&lt;/span&gt;
+&lt;span class="n"&gt;wget&lt;/span&gt; &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;opensnp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;opensnp_datadump&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;current&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zip&lt;/span&gt;
+&lt;span class="n"&gt;unzip&lt;/span&gt; &lt;span class="n"&gt;opensnp_datadump&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;current&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zip&lt;/span&gt;
 
 &lt;span class="c1"&gt;# Isolate the 23&amp;me; files&lt;/span&gt;
-mkdir gt23
-mv opensnp_datadump.current/*.23andme.txt* gt23/
+&lt;span class="n"&gt;mkdir&lt;/span&gt; &lt;span class="n"&gt;gt23&lt;/span&gt;
+&lt;span class="n"&gt;mv&lt;/span&gt; &lt;span class="n"&gt;opensnp_datadump&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;current&lt;/span&gt;&lt;span class="o"&gt;/*.&lt;/span&gt;&lt;span class="mi"&gt;23&lt;/span&gt;&lt;span class="n"&gt;andme&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;txt&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;gt23&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
 
 &lt;span class="c1"&gt;# how many 23&amp;me; genotype files?&lt;/span&gt;
-find gt23/ -type f &lt;span class="p"&gt;|&lt;/span&gt; wc -l
+&lt;span class="n"&gt;find&lt;/span&gt; &lt;span class="n"&gt;gt23&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;type&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;wc&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1068,9 +1068,9 @@ find gt23/ -type f &lt;span class="p"&gt;|&lt;/span&gt; wc -l
 &lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;%%sh
-mkdir gt23_testset
-cp gt23/user21* gt23_testset/
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%sh&lt;/span&gt;
+&lt;span class="n"&gt;mkdir&lt;/span&gt; &lt;span class="n"&gt;gt23_testset&lt;/span&gt;
+&lt;span class="n"&gt;cp&lt;/span&gt; &lt;span class="n"&gt;gt23&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;user21&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;gt23_testset&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1078,11 +1078,11 @@ cp gt23/user21* gt23_testset/
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [5]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;glob&lt;/span&gt;
-&lt;span class="n"&gt;allFiles&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;glob&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;glob&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"gt23_testset/*.txt"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;allFiles&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;glob&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;glob&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"/media/sf_ubuntuVbox/opensnp/gt23_testset/*.txt"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1093,8 +1093,8 @@ cp gt23/user21* gt23_testset/
 &lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;%%sh
-du -h gt23_testset/
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%sh&lt;/span&gt;
+&lt;span class="n"&gt;du&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="n"&gt;gt23_testset&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1130,7 +1130,7 @@ du -h gt23_testset/
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [5]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [8]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;re&lt;/span&gt;
@@ -1142,29 +1142,29 @@ du -h gt23_testset/
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [6]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [9]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt;
-gtdf = pd.DataFrame(index=['rsid']) #empty DataFrame
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time&lt;/span&gt;
+&lt;span class="n"&gt;gtdf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DataFrame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="c1"&gt;#empty DataFrame&lt;/span&gt;
 
-for file_ in allFiles:
-    #extract the userid
-    match = re.search('user(\d+)', file_)
-    userid = match.group(1)
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;file_&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;allFiles&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="c1"&gt;#extract the userid&lt;/span&gt;
+    &lt;span class="n"&gt;match&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;re&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;search&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'user(\d+)'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;file_&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;userid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;match&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     
-    df = pd.read_csv(file_, 
-                     comment='#', 
-                     sep='\t', 
-                     header=None,
-                     usecols=[0,3],
-                     error_bad_lines=False,
-                     names=['rsid', userid],
-                     dtype={'rsid':object,
-                            'genotype':object},
-                     index_col=['rsid']
-                    )
-    gtdf = gtdf.join(df, how='outer')
+    &lt;span class="n"&gt;df&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;file_&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                     &lt;span class="n"&gt;comment&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'#'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                     &lt;span class="n"&gt;sep&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="se"&gt;\t&lt;/span&gt;&lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                     &lt;span class="n"&gt;header&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                     &lt;span class="n"&gt;usecols&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+                     &lt;span class="n"&gt;error_bad_lines&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                     &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;userid&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+                     &lt;span class="n"&gt;dtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                            &lt;span class="s1"&gt;'genotype'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+                     &lt;span class="n"&gt;index_col&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+                    &lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;gtdf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;gtdf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;how&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'outer'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1173,8 +1173,8 @@ for file_ in allFiles:
 &lt;div class="output"&gt;
 &lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;CPU times: user 4min 16s, sys: 4.62 s, total: 4min 21s
-Wall time: 4min 30s
+&lt;pre&gt;CPU times: user 7min 48s, sys: 9.83 s, total: 7min 58s
+Wall time: 8min 15s
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1183,17 +1183,17 @@ Wall time: 4min 30s
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [7]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [10]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;gtdf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;gtdf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dropna&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="output_wrapper"&gt;
 &lt;div class="output"&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[7]:&lt;/div&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[10]:&lt;/div&gt;
 &lt;div class="output_html rendered_html output_subarea output_execute_result"&gt;
 &lt;div&gt;
 &lt;table border="1" class="dataframe"&gt;
@@ -1225,124 +1225,124 @@ Wall time: 4min 30s
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;th&gt;i1000001&lt;/th&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;...&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
+&lt;th&gt;i1000009&lt;/th&gt;
 &lt;td&gt;G&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;...&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;--&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;th&gt;i1000002&lt;/th&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
+&lt;th&gt;i2000003&lt;/th&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
 &lt;td&gt;...&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
+&lt;td&gt;GG&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;th&gt;i1000003&lt;/th&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
+&lt;th&gt;i3000001&lt;/th&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
 &lt;td&gt;...&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
+&lt;td&gt;II&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;th&gt;i1000004&lt;/th&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
+&lt;th&gt;i3000002&lt;/th&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;--&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;--&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
 &lt;td&gt;...&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;--&lt;/td&gt;
+&lt;td&gt;--&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;th&gt;i1000006&lt;/th&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
+&lt;th&gt;i3000003&lt;/th&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;--&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;--&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
 &lt;td&gt;...&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
-&lt;td&gt;NaN&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;--&lt;/td&gt;
+&lt;td&gt;--&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
+&lt;td&gt;G&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -1399,17 +1399,17 @@ This code will read the same files in parallel and create a "lazy" &lt;code&gt;D
 &lt;div class="prompt input_prompt"&gt;In [9]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt; 
-# won't actually read the csv's yet...
-ddf = dd.read_csv('gt23_testset/*.txt',
-                  comment='#', 
-                  sep='\t', 
-                  header=None,
-                  usecols=[0,3],
-                  error_bad_lines=False,
-                  names=['rsid', 'genotype'],
-                  dtype={'rsid':object,
-                         'genotype':object})
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time &lt;/span&gt;
+&lt;span class="c1"&gt;# won't actually read the csv's yet...&lt;/span&gt;
+&lt;span class="n"&gt;ddf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'gt23_testset/*.txt'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                  &lt;span class="n"&gt;comment&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'#'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                  &lt;span class="n"&gt;sep&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="se"&gt;\t&lt;/span&gt;&lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                  &lt;span class="n"&gt;header&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                  &lt;span class="n"&gt;usecols&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+                  &lt;span class="n"&gt;error_bad_lines&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                  &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'genotype'&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+                  &lt;span class="n"&gt;dtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                         &lt;span class="s1"&gt;'genotype'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1452,9 +1452,9 @@ Wall time: 298 ms
 &lt;div class="prompt input_prompt"&gt;In [11]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt;
-#  this operation is expensive
-ddf = ddf.set_index('rsid')
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time&lt;/span&gt;
+&lt;span class="c1"&gt;#  this operation is expensive&lt;/span&gt;
+&lt;span class="n"&gt;ddf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ddf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_index&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1486,9 +1486,9 @@ Remember, in contrast to &lt;code&gt;gtdf&lt;/code&gt;, &lt;code&gt;ddf&lt;/code
 &lt;div class="prompt input_prompt"&gt;In [12]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt;
-# dask DataFrame
-ddf.loc['rs1333525']['genotype'].value_counts().compute()
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time&lt;/span&gt;
+&lt;span class="c1"&gt;# dask DataFrame&lt;/span&gt;
+&lt;span class="n"&gt;ddf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rs1333525'&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s1"&gt;'genotype'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value_counts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;compute&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1518,9 +1518,9 @@ Name: genotype, dtype: int64&lt;/pre&gt;
 &lt;div class="prompt input_prompt"&gt;In [13]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt;
-# pure pandas DataFrame
-gtdf.loc['rs1333525'].value_counts()
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time&lt;/span&gt;
+&lt;span class="c1"&gt;# pure pandas DataFrame&lt;/span&gt;
+&lt;span class="n"&gt;gtdf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rs1333525'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value_counts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1580,8 +1580,8 @@ HDF5 can be tricky to work with.  Dask uses the &lt;a href="http://fastparquet.r
 &lt;div class="prompt input_prompt"&gt;In [13]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt;
-dd.to_parquet('gt23test_pq/', ddf)
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time&lt;/span&gt;
+&lt;span class="n"&gt;dd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_parquet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'gt23test_pq/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ddf&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1625,8 +1625,8 @@ Revisiting the dask DataFrame, &lt;code&gt;ddf&lt;/code&gt;, remember that took 
 &lt;div class="prompt input_prompt"&gt;In [15]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt;
-pqdf.loc['rs1333525']['genotype'].value_counts().compute()
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time&lt;/span&gt;
+&lt;span class="n"&gt;pqdf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rs1333525'&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s1"&gt;'genotype'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value_counts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;compute&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1684,8 +1684,8 @@ Name: genotype, dtype: int64&lt;/pre&gt;
 &lt;div class="prompt input_prompt"&gt;In [16]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;%%sh
-find gt23_pq/ -type f &lt;span class="p"&gt;|&lt;/span&gt; wc -l
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%sh&lt;/span&gt;
+&lt;span class="n"&gt;find&lt;/span&gt; &lt;span class="n"&gt;gt23_pq&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;type&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;wc&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1717,8 +1717,8 @@ find gt23_pq/ -type f &lt;span class="p"&gt;|&lt;/span&gt; wc -l
 &lt;div class="prompt input_prompt"&gt;In [18]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt;
-allpqdf.loc['rs1333525']['genotype'].value_counts().compute()
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time&lt;/span&gt;
+&lt;span class="n"&gt;allpqdf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rs1333525'&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s1"&gt;'genotype'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value_counts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;compute&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
