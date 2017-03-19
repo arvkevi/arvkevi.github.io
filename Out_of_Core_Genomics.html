@@ -1262,7 +1262,7 @@ For the purposes of this demo, the analysis will be limited to only the <strong>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
-<span class="n">allFiles</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"/media/sf_ubuntuVbox/opensnp/gt23_testset/*.txt"</span><span class="p">)</span>
+<span class="n">allFiles</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"gt23_testset/*.txt"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1886,7 +1886,7 @@ Name: genotype, dtype: int64</pre>
 <div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">allpqdf</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">'/media/sf_ubuntuVbox/opensnp_datadump.current/gt23_pq/'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">'rsid'</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">allpqdf</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">'gt23_pq/'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">'rsid'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
