@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="author" content="Kevin Arvai" />
-        <meta name="keywords" content="dask,parquet,genomics" />
-        <meta name="description" content="Motivation for this post originates from my interest in working with openSNP data. openSNP is an open-source platform where users upload their genotype data from direct-to-consumer genetics companies like 23andMe. Raw result files are often hundreds of thousandas of records long, each record representing a location in the human genome. There are over 4,000 raw result files in the openSNP data however, my laptop runs a VirtualBox with only 5GB RAM, which meant I needed to find some clever solutions beyond the standard pandas" />
+        <meta name="keywords" content="dask,parquet,genomics,bioinformatics" />
+        <meta name="description" content="It&#39;s often the case where data scientists want to explore a data set that doesn&#39;t fit into memory. As data continues to grow in size, so too, do our tools to work with these data need to expand. Motivation for this post originates from my interest in working with openSNP" />
 
 
     <title>Out of Core Genomics - Blogging Bioinformatics</title>
@@ -175,7 +175,7 @@
             </span>
             <span class="tags">
                 <i class="fa fa-tags padding-small"></i>
-                <a href="./tag/dask.html">dask</a> /                 <a href="./tag/parquet.html">parquet</a> /                 <a href="./tag/genomics.html">genomics</a>            </span>
+                <a href="./tag/dask.html">dask</a> /                 <a href="./tag/parquet.html">parquet</a> /                 <a href="./tag/genomics.html">genomics</a> /                 <a href="./tag/bioinformatics.html">bioinformatics</a>            </span>
         </small>
     </div>
 </div><!-- /.post-info -->                        </small>
@@ -1163,7 +1163,8 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Motivation for this post originates from my interest in working with <a href="https://opensnp.org/">openSNP</a> data. openSNP is an open-source platform where users upload their genotype data from direct-to-consumer genetics companies like <a href="https://www.23andme.com/">23andMe</a>.  Raw result files are often hundreds of thousandas of records long, each record representing a location in the human genome.  There are over 4,000 raw result files in the openSNP data however, my laptop runs a VirtualBox with only 5GB RAM, which meant I needed to find some clever solutions beyond the standard <a href="">pandas</a> library in order to work with this much data.  This post describes one of several applications that can benefit from out-of-core computing.</p>
+<p>It's often the case where data scientists want to explore a data set that doesn't fit into memory.  As data continues to grow in size, so too, do our tools to work with these data need to expand.
+Motivation for this post originates from my interest in working with <a href="https://opensnp.org/">openSNP</a> data. openSNP is an open-source platform where users upload their genotype data from direct-to-consumer genetics companies like <a href="https://www.23andme.com/">23andMe</a>.  Raw result files are often hundreds of thousandas of records long, each record representing a location in the human genome.  There are over 4,000 raw result files in the openSNP data however, my laptop runs a VirtualBox with only 5GB RAM, which meant I needed to find some clever solutions beyond the standard <a href="">pandas</a> library in order to work with this much data.  This post describes one of several applications that can benefit from out-of-core computing.</p>
 </div>
 </div>
 </div>
@@ -1176,49 +1177,13 @@ h6:hover .anchor-link {
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># this will take some time to download, depending on your internet speed</span>
-<span class="o">!</span> wget https://opensnp.org/data/zip/opensnp_datadump.current.zip
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span> unzip opensnp_datadump.current.zip
-<span class="o">!</span> du -h 
-</pre></div>
-</div>
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>That's over 40 GB of genotype data stored as text files!  For the purposes of this demo, the analysis will be limited to only the <strong>23&Me;</strong> files.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [6]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Isolate the 23&me; files</span>
-<span class="o">!</span> mkdir /media/sf_ubuntuVbox/gt23
-<span class="o">!</span> mv *.23andme.txt* /media/sf_ubuntuVbox/gt23/
-</pre></div>
-</div>
+<p>openSNP has over 40 GB of genotype & phenotype data stored as text files!<br>
+For the purposes of this demo, the analysis will be limited to only the <strong>23&Me;</strong> files.  Below are a few shell commands get the raw data, create a directory and extract 23&me; files.</br></p>
 </div>
 </div>
 </div>
@@ -1227,18 +1192,17 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span> find /media/sf_ubuntuVbox/opensnp_datadump.current/gt23/ -type f <span class="p">|</span> wc -l
+<div class=" highlight hl-ipython3"><pre><span></span>%%sh
+wget https://opensnp.org/data/zip/opensnp_datadump.current.zip
+unzip opensnp_datadump.current.zip
+
+<span class="c1"># Isolate the 23&me; files</span>
+mkdir gt23
+mv opensnp_datadump.current/*.23andme.txt* gt23/
+
+<span class="c1"># how many 23&me; genotype files?</span>
+find gt23/ -type f <span class="p">|</span> wc -l
 </pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>1915
-</pre>
-</div>
 </div>
 </div>
 </div>
@@ -1252,62 +1216,12 @@ h6:hover .anchor-link {
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [117]:</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">testfile</span> <span class="o">=</span> <span class="s1">'/media/sf_ubuntuVbox/opensnp_datadump.current/gt23/user2001_file1185_yearofbirth_unknown_sex_unknown.23andme.txt'</span>
-<span class="o">!</span> head -20 <span class="nv">$testfile</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [5]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span> wc -l <span class="nv">$testfile</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>602366 /media/sf_ubuntuVbox/opensnp_datadump.current/gt23/user2001_file1185_yearofbirth_unknown_sex_unknown.23andme.txt
-</pre>
-</div>
-</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img alt="raw data" src="images/23andMe_raw.JPG" /></p>
 </div>
 </div>
 </div>
@@ -1316,29 +1230,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Unfortunately, like most real-world data, the openSNP data dump was a little messy.  Some of the files were in binary format, had incorrect filename extensions, and malformed headers.  I removed files that were small or large, relative to the averages.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [8]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Clean 23&me; files -- may need some other processing</span>
-<span class="o">!</span> find . -name <span class="s2">"*.txt"</span> -size -15M -delete
-<span class="o">!</span> find . -name <span class="s2">"*.txt"</span> -size +25M -delete
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="openSNP-test-set">openSNP test set<a class="anchor-link" href="#openSNP-test-set">¶</a></h2>
+<h2 id="manageable-test-set">manageable test set<a class="anchor-link" href="#manageable-test-set">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1353,25 +1245,12 @@ h6:hover .anchor-link {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># select 10 for a test set</span>
-<span class="o">!</span> mkdir gt23test
-<span class="o">!</span> cp gt23/user200* gt23test/
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
-<span class="n">dir23gt</span> <span class="o">=</span> <span class="s1">'/media/sf_ubuntuVbox/opensnp_datadump.current/gt23test/'</span>
-<span class="n">allFiles</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">dir23gt</span> <span class="o">+</span> <span class="s2">"/*.txt"</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span>%%sh
+mkdir gt23_testset
+cp gt23/user21* gt23_testset/
 </pre></div>
 </div>
 </div>
@@ -1382,8 +1261,20 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># How big are the files in the gt23test directory?</span>
-<span class="o">!</span> du -h <span class="nv">$dir23gt</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
+<span class="n">allFiles</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"gt23_testset/*.txt"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%sh
+du -h gt23_testset/
 </pre></div>
 </div>
 </div>
@@ -1392,7 +1283,7 @@ h6:hover .anchor-link {
 <div class="output">
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>166M	/media/sf_ubuntuVbox/opensnp_datadump.current/gt23test/
+<pre>766M	gt23_testset/
 </pre>
 </div>
 </div>
@@ -1413,13 +1304,13 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>First, start with a pure <a href="http://pandas.pydata.org/">pandas</a> <code>read_csv</code> solution, something that should be familiar to Python data scientists.  Let's try to create a large <code>DataFrame</code> in memory.  <code>join</code> can accomplish this task, even though it's an expensive operation the test data is small enough that we can successfully execute it.</p>
+<p>First, start with a pure <a href="http://pandas.pydata.org/">pandas</a> <code>read_csv</code> solution, something that should be familiar to Python data scientists.  Let's try to create a large <code>DataFrame</code> in memory.  <code>join</code> can accomplish this task, even though it's an expensive operation, the test data is small enough that we can successfully execute it.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
@@ -1431,29 +1322,29 @@ h6:hover .anchor-link {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%%time</span>
-<span class="n">gtdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">'rsid'</span><span class="p">])</span> <span class="c1">#empty DataFrame</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+gtdf = pd.DataFrame(index=['rsid']) #empty DataFrame
 
-<span class="k">for</span> <span class="n">file_</span> <span class="ow">in</span> <span class="n">allFiles</span><span class="p">:</span>
-    <span class="c1">#extract the userid</span>
-    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">'user(\d+)'</span><span class="p">,</span> <span class="n">file_</span><span class="p">)</span>
-    <span class="n">userid</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+for file_ in allFiles:
+    #extract the userid
+    match = re.search('user(\d+)', file_)
+    userid = match.group(1)
     
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_</span><span class="p">,</span> 
-                     <span class="n">comment</span><span class="o">=</span><span class="s1">'#'</span><span class="p">,</span> 
-                     <span class="n">sep</span><span class="o">=</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">,</span> 
-                     <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                     <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
-                     <span class="n">error_bad_lines</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                     <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">'rsid'</span><span class="p">,</span> <span class="n">userid</span><span class="p">],</span>
-                     <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">'rsid'</span><span class="p">:</span><span class="nb">object</span><span class="p">,</span>
-                            <span class="s1">'genotype'</span><span class="p">:</span><span class="nb">object</span><span class="p">},</span>
-                     <span class="n">index_col</span><span class="o">=</span><span class="p">[</span><span class="s1">'rsid'</span><span class="p">]</span>
-                    <span class="p">)</span>
-    <span class="n">gtdf</span> <span class="o">=</span> <span class="n">gtdf</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'outer'</span><span class="p">)</span>
+    df = pd.read_csv(file_, 
+                     comment='#', 
+                     sep='\t', 
+                     header=None,
+                     usecols=[0,3],
+                     error_bad_lines=False,
+                     names=['rsid', userid],
+                     dtype={'rsid':object,
+                            'genotype':object},
+                     index_col=['rsid']
+                    )
+    gtdf = gtdf.join(df, how='outer')
 </pre></div>
 </div>
 </div>
@@ -1462,8 +1353,8 @@ h6:hover .anchor-link {
 <div class="output">
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 52.3 s, sys: 508 ms, total: 52.8 s
-Wall time: 53.9 s
+<pre>CPU times: user 4min 16s, sys: 4.62 s, total: 4min 21s
+Wall time: 4min 30s
 </pre>
 </div>
 </div>
@@ -1472,7 +1363,7 @@ Wall time: 53.9 s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">gtdf</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -1482,42 +1373,98 @@ Wall time: 53.9 s
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
 <table border="1" class="dataframe">
 <thead>
 <tr style="text-align: right;">
 <th></th>
-<th>2000</th>
-<th>2001</th>
-<th>2002</th>
-<th>2003</th>
-<th>2004</th>
-<th>2005</th>
-<th>2006</th>
-<th>2008</th>
-<th>2009</th>
-<th>200</th>
+<th>2100</th>
+<th>2106</th>
+<th>210</th>
+<th>2111</th>
+<th>2116</th>
+<th>2117</th>
+<th>2118</th>
+<th>2124</th>
+<th>2126</th>
+<th>2127</th>
+<th>...</th>
+<th>2177</th>
+<th>217</th>
+<th>2182</th>
+<th>2183</th>
+<th>2184</th>
+<th>2186</th>
+<th>2189</th>
+<th>2191</th>
+<th>2192</th>
+<th>2195</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <th>i1000001</th>
-<td>A</td>
-<td>A</td>
+<td>NaN</td>
 <td>NaN</td>
 <td>A</td>
 <td>A</td>
 <td>A</td>
 <td>A</td>
+<td>NaN</td>
 <td>A</td>
 <td>A</td>
+<td>NaN</td>
+<td>...</td>
+<td>A</td>
+<td>NaN</td>
+<td>A</td>
+<td>G</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+<td>NaN</td>
+<td>A</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th>i1000002</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
 <td>NaN</td>
 </tr>
 <tr>
 <th>i1000003</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
 <td>A</td>
+<td>A</td>
+<td>A</td>
+<td>NaN</td>
+<td>A</td>
+<td>A</td>
+<td>NaN</td>
+<td>...</td>
 <td>A</td>
 <td>NaN</td>
 <td>A</td>
@@ -1525,50 +1472,61 @@ Wall time: 53.9 s
 <td>A</td>
 <td>A</td>
 <td>A</td>
+<td>NaN</td>
 <td>A</td>
-<td>NaN</td>
-</tr>
-<tr>
-<th>i1000007</th>
-<td>C</td>
-<td>C</td>
-<td>NaN</td>
-<td>C</td>
-<td>C</td>
-<td>C</td>
-<td>C</td>
-<td>C</td>
-<td>C</td>
 <td>NaN</td>
 </tr>
 <tr>
-<th>i1000008</th>
-<td>G</td>
-<td>G</td>
+<th>i1000004</th>
 <td>NaN</td>
-<td>G</td>
-<td>G</td>
-<td>G</td>
-<td>G</td>
-<td>G</td>
-<td>G</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
 <td>NaN</td>
 </tr>
 <tr>
-<th>i1000009</th>
-<td>G</td>
-<td>G</td>
-<td>G</td>
-<td>G</td>
-<td>G</td>
-<td>G</td>
-<td>G</td>
-<td>G</td>
-<td>G</td>
-<td>G</td>
+<th>i1000006</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
 </tr>
 </tbody>
 </table>
+<p>5 rows × 43 columns</p>
 </div>
 </div>
 </div>
@@ -1580,7 +1538,7 @@ Wall time: 53.9 s
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>On the test set of 10 files, the entire <code>DataFrame</code> fits into memory.
+<p>On the test set of 43 files, the entire <code>DataFrame</code> fits into memory.
 However, using this pure pandas method on the full set of 1,915 files would eventually 
 crash the computer because it would run out of pyhsical memory.</p>
 </div>
@@ -1607,7 +1565,7 @@ This code will read the same files in parallel and create a "lazy" <code>DataFra
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">dask.dataframe</span> <span class="k">as</span> <span class="nn">dd</span>
@@ -1618,33 +1576,20 @@ This code will read the same files in parallel and create a "lazy" <code>DataFra
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#for the blocksize parameter in the next cell</span>
-<span class="kn">import</span> <span class="nn">psutil</span>
-<span class="n">blocksize</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">total</span> <span class="o">/</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">/</span> <span class="mi">10</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [13]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%%time # <-- won't actually read the csv's yet...</span>
-<span class="n">ddf</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'/media/sf_ubuntuVbox/opensnp_datadump.current/gt23test/*.txt'</span><span class="p">,</span>
-                  <span class="n">comment</span><span class="o">=</span><span class="s1">'#'</span><span class="p">,</span> 
-                  <span class="n">sep</span><span class="o">=</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">,</span> 
-                  <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
-                  <span class="n">error_bad_lines</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                  <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">'rsid'</span><span class="p">,</span> <span class="s1">'genotype'</span><span class="p">],</span>
-                  <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">'rsid'</span><span class="p">:</span><span class="nb">object</span><span class="p">,</span>
-                         <span class="s1">'genotype'</span><span class="p">:</span><span class="nb">object</span><span class="p">},</span>
-                  <span class="n">blocksize</span><span class="o">=</span><span class="n">blocksize</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span> 
+# won't actually read the csv's yet...
+ddf = dd.read_csv('gt23_testset/*.txt',
+                  comment='#', 
+                  sep='\t', 
+                  header=None,
+                  usecols=[0,3],
+                  error_bad_lines=False,
+                  names=['rsid', 'genotype'],
+                  dtype={'rsid':object,
+                         'genotype':object})
 </pre></div>
 </div>
 </div>
@@ -1653,8 +1598,8 @@ This code will read the same files in parallel and create a "lazy" <code>DataFra
 <div class="output">
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 16 ms, sys: 8 ms, total: 24 ms
-Wall time: 35.5 ms
+<pre>CPU times: user 112 ms, sys: 52 ms, total: 164 ms
+Wall time: 298 ms
 </pre>
 </div>
 </div>
@@ -1663,7 +1608,7 @@ Wall time: 35.5 ms
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [14]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 1 partition per file</span>
@@ -1674,9 +1619,9 @@ Wall time: 35.5 ms
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[14]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
 <div class="output_text output_subarea output_execute_result">
-<pre>dd.DataFrame<from-de..., npartitions="10"></pre>
+<pre>dd.DataFrame<from-de..., npartitions="43"></pre>
 </div>
 </div>
 </div>
@@ -1684,12 +1629,12 @@ Wall time: 35.5 ms
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [16]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%%time</span>
-<span class="c1">#  this operation is expensive</span>
-<span class="n">ddf</span> <span class="o">=</span> <span class="n">ddf</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'rsid'</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+#  this operation is expensive
+ddf = ddf.set_index('rsid')
 </pre></div>
 </div>
 </div>
@@ -1698,8 +1643,8 @@ Wall time: 35.5 ms
 <div class="output">
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 27.4 s, sys: 1.6 s, total: 29 s
-Wall time: 34.2 s
+<pre>CPU times: user 4min 44s, sys: 23 s, total: 5min 7s
+Wall time: 4min 45s
 </pre>
 </div>
 </div>
@@ -1711,19 +1656,19 @@ Wall time: 34.2 s
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The dask <code>compute()</code> method provides familiar results.  Since we didn't <code>join</code> the dask DataFrame, let's investigate one SNP.
+<p>The dask <code>compute()</code> method provides familiar results.  Since we didn't <code>join</code> the dask DataFrame, let's investigate one record (or one SNP).
 Remember, in contrast to <code>gtdf</code>, <code>ddf</code> isn't in memory so it will take longer to get this result.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [26]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># dask</span>
-<span class="c1">#%%%time</span>
-<span class="n">ddf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'rs1333525'</span><span class="p">][</span><span class="s1">'genotype'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+# dask DataFrame
+ddf.loc['rs1333525']['genotype'].value_counts().compute()
 </pre></div>
 </div>
 </div>
@@ -1732,15 +1677,16 @@ Remember, in contrast to <code>gtdf</code>, <code>ddf</code> isn't in memory so 
 <div class="output">
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 18.3 s, sys: 1.32 s, total: 19.6 s
-Wall time: 17.5 s
+<pre>CPU times: user 3min 31s, sys: 36.1 s, total: 4min 7s
+Wall time: 3min 46s
 </pre>
 </div>
 </div>
-<div class="output_area"><div class="prompt output_prompt">Out[26]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
 <div class="output_text output_subarea output_execute_result">
-<pre>CC    8
-CT    2
+<pre>CC    37
+CT     5
+TT     1
 Name: genotype, dtype: int64</pre>
 </div>
 </div>
@@ -1749,12 +1695,12 @@ Name: genotype, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [24]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># pure pandas</span>
-<span class="c1">#%%%time</span>
-<span class="n">gtdf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'rs1333525'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+# pure pandas DataFrame
+gtdf.loc['rs1333525'].value_counts()
 </pre></div>
 </div>
 </div>
@@ -1763,15 +1709,16 @@ Name: genotype, dtype: int64</pre>
 <div class="output">
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 372 ms, sys: 0 ns, total: 372 ms
-Wall time: 383 ms
+<pre>CPU times: user 4.3 s, sys: 8.1 s, total: 12.4 s
+Wall time: 1min 1s
 </pre>
 </div>
 </div>
-<div class="output_area"><div class="prompt output_prompt">Out[24]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[13]:</div>
 <div class="output_text output_subarea output_execute_result">
-<pre>CC    8
-CT    2
+<pre>CC    37
+CT     5
+TT     1
 Name: rs1333525, dtype: int64</pre>
 </div>
 </div>
@@ -1783,9 +1730,8 @@ Name: rs1333525, dtype: int64</pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>At first blush, the computation times are deceiving.  As expected, the dask method took longer because of the lazy computation, it still had to read all the files and then perform the operation.
-If you consider the 34 seconds to set the index and the 17.5 seconds to compute the <code>value_counts()</code>, the parallel dask method was actually equally as fast as the 53.9 seconds 
-that it took pure pandas to create the <code>gtdf</code> <code>DataFrame</code>.  The benefit is that the parallel dask method didn't store the <code>DataFrame</code> object in memory!</p>
+<p>If you consider the 3 minutes 46 seconds to compute the <code>value_counts()</code>, the parallel dask method was slightly slower than the 1 minutes 1 second
+that it took pure pandas to create the <code>gtdf</code> <code>DataFrame</code>.  At first blush, the computation times are deceiving.  As expected, the dask method took longer because of the lazy computation, it still had to read all the files and then perform the operation.  The real benefit of <code>dask</code> comes into play when you can't fit the DataFrame into memory.</p>
 </div>
 </div>
 </div>
@@ -1794,7 +1740,7 @@ that it took pure pandas to create the <code>gtdf</code> <code>DataFrame</code>.
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Increase-query-peformance-with-Parquet">Increase query peformance with Parquet<a class="anchor-link" href="#Increase-query-peformance-with-Parquet">¶</a></h2>
+<h2 id="Increase-query-peformance----Convert-.txt/.csv-to--Parquet!">Increase query peformance -- Convert .txt/.csv to  Parquet!<a class="anchor-link" href="#Increase-query-peformance----Convert-.txt/.csv-to--Parquet!">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1811,11 +1757,11 @@ HDF5 can be tricky to work with.  Dask uses the <a href="http://fastparquet.read
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [31]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%%time</span>
-<span class="n">dd</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s1">'/media/sf_ubuntuVbox/opensnp_datadump.current/gt23test_pq/'</span><span class="p">,</span> <span class="n">ddf</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+dd.to_parquet('gt23test_pq/', ddf)
 </pre></div>
 </div>
 </div>
@@ -1824,8 +1770,8 @@ HDF5 can be tricky to work with.  Dask uses the <a href="http://fastparquet.read
 <div class="output">
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 1min 7s, sys: 3.74 s, total: 1min 11s
-Wall time: 1min 10s
+<pre>CPU times: user 12min 35s, sys: 1min 41s, total: 14min 17s
+Wall time: 19min 30s
 </pre>
 </div>
 </div>
@@ -1837,18 +1783,18 @@ Wall time: 1min 10s
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Essentially, what we've done to this point is convert csv files to parquet files.  How much performance is really gained from this?
-Revisiting the dask DataFrame from csv's, <code>ddf</code>, a comparison:</p>
+<p>Essentially, what we've done to this point is convert <code>.txt</code> files to parquet files.  How much performance is really gained from this? 
+Revisiting the dask DataFrame, <code>ddf</code>, remember that took 3 minutes and 46 seconds to compute <code>value_counts()</code>:</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># using dask with fastparquet, nothing computed here...</span>
-<span class="n">pqdf</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">'/media/sf_ubuntuVbox/opensnp_datadump.current/gt23test_pq/'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">'rsid'</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># using dask with fastparquet, lazy, so nothing computed here...</span>
+<span class="n">pqdf</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">'gt23test_pq/'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">'rsid'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1856,41 +1802,11 @@ Revisiting the dask DataFrame from csv's, <code>ddf</code>, a comparison:</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [35]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%%time</span>
-<span class="n">pqdf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'rs1333525'</span><span class="p">][</span><span class="s1">'genotype'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 3.94 s, sys: 108 ms, total: 4.05 s
-Wall time: 4.37 s
-</pre>
-</div>
-</div>
-<div class="output_area"><div class="prompt output_prompt">Out[35]:</div>
-<div class="output_text output_subarea output_execute_result">
-<pre>CC    8
-CT    2
-Name: genotype, dtype: int64</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [36]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%%time</span>
-<span class="n">ddf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'rs1333525'</span><span class="p">][</span><span class="s1">'genotype'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+pqdf.loc['rs1333525']['genotype'].value_counts().compute()
 </pre></div>
 </div>
 </div>
@@ -1899,15 +1815,16 @@ Name: genotype, dtype: int64</pre>
 <div class="output">
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 18.6 s, sys: 1.15 s, total: 19.8 s
-Wall time: 18.3 s
+<pre>CPU times: user 8.18 s, sys: 608 ms, total: 8.79 s
+Wall time: 11.7 s
 </pre>
 </div>
 </div>
-<div class="output_area"><div class="prompt output_prompt">Out[36]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[15]:</div>
 <div class="output_text output_subarea output_execute_result">
-<pre>CC    8
-CT    2
+<pre>CC    37
+CT     5
+TT     1
 Name: genotype, dtype: int64</pre>
 </div>
 </div>
@@ -1919,8 +1836,8 @@ Name: genotype, dtype: int64</pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Parquet offers a noticeable performance increase, even with only 10 files.  Scaling this up to 1,915 files, the csv version, <code>ddf</code>, took 5+ hours to execute <code>value_counts()</code> for one SNP.
-<code>to_parquet</code> on the 1,915 file <code>DataFrame</code> took a couple hours.  Once you see the query performance improvements, it's well worth the up-front cost of converting from csv to parquet.</p>
+<p>Parquet offers a noticeable performance increase, a savings of >3 minutes, even with this small validation set of 43 files.  Scaling this up to 1,915 files, the parallel <code>.txt</code> version, <code>ddf</code>, took 5+ hours to execute <code>value_counts()</code> for one SNP.
+<code>to_parquet</code> on the 1,915 file <code>DataFrame</code> took a couple hours.  Once you see the query performance improvements, it's well worth the up-front cost of converting from <code>.txt</code> or <code>.csv</code> to parquet.</p>
 </div>
 </div>
 </div>
@@ -1933,13 +1850,22 @@ Name: genotype, dtype: int64</pre>
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I pre-computed the parquet files using the commands above.</p>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [46]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Used commands above to produce parquet files</span>
-<span class="o">!</span> find /media/sf_ubuntuVbox/opensnp_datadump.current/gt23_pq/ -type f <span class="p">|</span> wc -l
+<div class=" highlight hl-ipython3"><pre><span></span>%%sh
+find gt23_pq/ -type f <span class="p">|</span> wc -l
 </pre></div>
 </div>
 </div>
@@ -1957,7 +1883,7 @@ Name: genotype, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">allpqdf</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">'/media/sf_ubuntuVbox/opensnp_datadump.current/gt23_pq/'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">'rsid'</span><span class="p">)</span>
@@ -1968,11 +1894,11 @@ Name: genotype, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%%time</span>
-<span class="n">allpqdf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'rs1333525'</span><span class="p">][</span><span class="s1">'genotype'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+allpqdf.loc['rs1333525']['genotype'].value_counts().compute()
 </pre></div>
 </div>
 </div>
@@ -1981,12 +1907,12 @@ Name: genotype, dtype: int64</pre>
 <div class="output">
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 9.07 s, sys: 524 ms, total: 9.59 s
-Wall time: 10.7 s
+<pre>CPU times: user 6.67 s, sys: 112 ms, total: 6.78 s
+Wall time: 7.2 s
 </pre>
 </div>
 </div>
-<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[18]:</div>
 <div class="output_text output_subarea output_execute_result">
 <pre>CC    1625
 CT     277
@@ -2002,7 +1928,7 @@ Name: genotype, dtype: int64</pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>These results highlight the superior performance of parquet over csv.  Additionally, dask proved it's value as an easy-to-use tool when physical memory is a constraint.
+<p>These results highlight the far superior performance of parquet over <code>.csv</code> or <code>.txt</code>.  Additionally, dask proved it's value as an easy-to-use tool when physical memory is a constraint.
 By now you've probably noticed I wasn't able to assign the user identifier to each column.  <code>dd.read_csv()</code> assumes the column names in each file are identical.</p>
 </div>
 </div>
@@ -2012,7 +1938,7 @@ By now you've probably noticed I wasn't able to assign the user identifier to ea
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id='Efficient-"big-data"-downstream-analysis'>Efficient "big-data" downstream analysis<a class="anchor-link" href='#Efficient-"big-data"-downstream-analysis'>¶</a></h2>
+<h2 id="Efficient-downstream-analysis">Efficient downstream analysis<a class="anchor-link" href="#Efficient-downstream-analysis">¶</a></h2>
 </div>
 </div>
 </div>
@@ -2021,14 +1947,14 @@ By now you've probably noticed I wasn't able to assign the user identifier to ea
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>I wanted to show how easy dask and parquet make it to quickly compare variant frequencies in the opensnp data to <a href="http://exac.broadinstitute.org/">exAC</a> data.
+<p>I wanted to show how easy dask and parquet make it to quickly compare variant frequencies in the openSNP data to <a href="http://exac.broadinstitute.org/">exAC</a> data.
 Here we'll define a function to extract variant frequencies from exAC, then compare to openSNP frequencies.</p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="k">import</span> <span class="n">urlparse</span>
@@ -2042,18 +1968,7 @@ Here we'll define a function to extract variant frequencies from exAC, then comp
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">ExacFrequency</span><span class="p">(</span><span class="n">rsid</span><span class="p">):</span>
@@ -2078,7 +1993,7 @@ Here we'll define a function to extract variant frequencies from exAC, then comp
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">brca2snps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'rs766173'</span><span class="p">,</span> <span class="s1">'rs144848'</span><span class="p">,</span> <span class="s1">'rs11571746'</span><span class="p">,</span> <span class="s1">'rs11571747'</span><span class="p">,</span>
@@ -2090,7 +2005,7 @@ Here we'll define a function to extract variant frequencies from exAC, then comp
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'rsid'</span><span class="p">,</span> <span class="s1">'gt'</span><span class="p">,</span> <span class="s1">'source'</span><span class="p">,</span> <span class="s1">'varFreq'</span><span class="p">])</span>
@@ -2101,7 +2016,7 @@ Here we'll define a function to extract variant frequencies from exAC, then comp
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">snp</span> <span class="ow">in</span> <span class="n">brca2snps</span><span class="p">:</span>
@@ -2116,7 +2031,7 @@ Here we'll define a function to extract variant frequencies from exAC, then comp
     <span class="k">for</span> <span class="n">gt</span><span class="p">,</span><span class="n">freq</span> <span class="ow">in</span> <span class="n">exac_freqs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">'rsid'</span><span class="p">:</span><span class="n">snp</span><span class="p">,</span> <span class="s1">'gt'</span><span class="p">:</span> <span class="n">gt</span><span class="p">,</span> <span class="s1">'source'</span><span class="p">:</span><span class="s1">'exAC'</span><span class="p">,</span> <span class="s1">'varFreq'</span><span class="p">:</span><span class="n">freq</span> <span class="p">},</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span> <span class="p">)</span>
     
-    <span class="k">for</span> <span class="n">gt</span><span class="p">,</span><span class="n">freq</span> <span class="ow">in</span> <span class="n">Osnp_freqs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">gt</span><span class="p">,</span><span class="n">freq</span> <span class="ow">in</span> <span class="n">snp_freqs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">gt</span> <span class="ow">in</span> <span class="n">exac_freqs</span><span class="p">:</span>
             <span class="n">gt</span> <span class="o">=</span> <span class="n">gt</span>
         <span class="k">elif</span> <span class="n">gt</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">exac_freqs</span><span class="p">:</span>
@@ -2129,12 +2044,325 @@ Here we'll define a function to extract variant frequencies from exAC, then comp
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><a href="/assets/images/snps.png"></a></p>
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"rsid"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"varFreq"</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">"source"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Populating the interactive namespace from numpy and matplotlib
+</pre>
+</div>
+</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAh4AAAF9CAYAAABLS2EjAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+AAAPYQAAD2EBqD+naQAAIABJREFUeJzs3XecVNX5x/HPFprAArsoKogF9cESDOpPjUaNxhJLNLZI
+iBpLLNGgKCaiqBhbMBLFEnvs0aDGJCiKMXZjCQpYUB6NigVEV3ZhKSuwO/P749zFYdgyM7tzZ12+
+79eL1+6ec+69515m7jxz2i1KJpOIiIiIxKG40BUQERGRNYcCDxEREYmNAg8RERGJjQIPERERiY0C
+DxEREYmNAg8RERGJjQIPERERiY0CDxEREYmNAg8RERGJjQIPERERiU1poStgZgOBG4CdgEXARHcf
+3cI2/YF3gfHufnGU9iywM1AHFEVFZ7n70DxVXURERLJU8MADeBiYCgwD+gGPmdk8d5/QzDbXEgKM
+VEngBHe/Jz/VFBERkdYqaFeLmW0PDAHOcffF7v4BcBVwUjPb7A8MBh5tJLuokTQRERFpJwo9xmNb
+YLa716SkTQPMzLqnFzazrsB1wKlAfSP7G2ZmM82sxsz+ZWab5KXWIiIikpNCBx4VQHVaWlX0s28j
+5ccC/3H35xrJmwm8BewCbAR8BUwxs/bQnSQiIiK0jzEeGXWPmNmWwPHA1o3lu/uv08qfRAhidgWe
+ybQyyWQyWVSkHhsREZEctPgBWujAo5LQ6pGqgjBQtDIt/QbgIndPT2+Uuy82sypg/WwqVFW1hOJi
+BR4iIiLZ6tNntVESqyl04PEaMNDMyt29oYtlB+Add1/aUCiacrsrsKWZXRwl9wASZnYQ8APgCuAS
+d58XbdMXWBv4MJsKJRJJEolkK05JREREmlKUTBb2Q9bMXgLeBkYB/YHJwJXufpOZzSJ0r7wMrJe2
+6dXAp8AV7l5pZq8TgoyGGTE3A4Pcfbts6lNZuUhRh4iISA7WXrtnu+9qATgcuBWYBywEbnT3m6K8
+zYAe7p4E5qZuZGZLgZqUrpeDgQnAe0AX4EngwPxXX0RERDJV8BaP9kYtHiIiIrnJpMWj0NNpRURE
+ZA2iwENERERio8BDREREYqPAQ0RERGKjwENERERio8BDREREYqPAQ0RERGKjwENERERio8BDRERE
+YtMelkwXERH5VkokElx99ZVMnfoqpaUldO/eg7POOocNNhjIddddzRtvTKO4uJgNNtiQUaNG07dv
+X26//RZmzXqXP/zhagBmzXqXE088hhdemMr06a8zbtwlfP/7u/Pqqy9xzz0P8OmnnzB+/O/58ssv
+6Ny5M0cffRx77/0jAP7xj4d46KGJrFixgt69+3DWWedgNriQl6RFCjxERERy9OqrL/Paa69y330P
+UVxczH/+8wLPPvsUy5cv46uvvuTuuydSWlrK+PHjGD/+csaNuwqAorSFxYtSEiorK9l8c2PEiDMB
+uOCC0Rx22E856KBD+OyzTznuuOFsueXWvP++c8cdt3LrrXezzjr9eOKJxzj//HN48MF/xnb+uVBX
+i4iISI7KyyuoqprPY49NoqpqPrvssisnn3wazz//LIce+lNKS8P3+8MPP5JXXnmJRCLR4j7r6law
+5557A/DZZ5/y0UcfsN9+4ZmnAwZswKRJ/6J//wE888xT7Lvv/qyzTj8A9t13f2prl/L222/l6Wzb
+hlo8REREcmQ2mIsvHseDD97PhAnj2WSTTRkx4kzmz59Pnz59Vpbr1asXiUSChQsXtrjPrl270alT
+JwAWLFhAp06dVv4N0K1bNwAWLVrE9Omv89JLLwKQTCYpLS1lwYKqtjzFNqfAQ0REpBV23PF77Ljj
+91i+fDn33HMHF100hr59+1Jd/U0AUF1dRUlJCb1796a4uHiVlo9Fi5oORsrLy1mxYgW1tbUrA44v
+v/yCnj3LWGeddTAbzMknn5a/k8sDdbWIiIjkaPLkSVxzzR9JJpN07tyZLbfcmqKiInbffU/+/veH
+qKurI5lM8uCDE9l11x9QVFREv37rMnv2bJYvX059fT2PPz65yf2vv35/Nt10c/7+9wcB+PzzuRx9
+9E+ZP/8r9thjL/79738xf/5XAMyZ8xkXXDCa5cuXx3LuuVKLh4iISI52220P/vvfl/nZzw6lc+fO
+dOnSlQsuuASzwVx33VUce+zPABg0aDPOOuscAPbYYy+efvpJhg07hH791uWQQw7n3/9+osljXHbZ
+H7jssov4+9//RteuXRg16lwGDNiAAQM2YPjwoxk58lSSSejUqZRf/OIEOnfuHMu556oomUwWug7t
+SmXlIl0QERGRHKy9ds+ilsqoq0VERERio8BDREREYqPAQ0RERGKjwENERERio8BDREREYqPAQ0RE
+RGJT8HU8zGwgcAOwE7AImOjuo1vYpj/wLjDe3S+O0roA1wAHAF2AZ4FT3L19rx0rjVq+fDkzZ8b3
+vIGttvpOu5/7LiLSERQ88AAeBqYCw4B+wGNmNs/dJzSzzbVAXVra5cBQYEdgKXAbcAdwcJvXWPJu
+5sy3uHjiZfTuX5H3Yy2YM58LjxzD0KHb5f1YIiJruoIGHma2PTAE2NPdFwOLzewq4Ayg0cDDzPYH
+BgOPpqSVAMcDR7n73ChtDPCOma3r7vPyeyaSD737V9B3436FroaIiLShQrd4bAvMdvealLRpgJlZ
+d3dfklrYzLoC1xGCjGNTsgYBZcD0hgR3dzOrBbYDml4IX0RE1ihxd+WCunNTFTrwqACq09IaxmT0
+BZak5Y0F/uPuz5nZsWn7oZF9VUf7ERERAUJX7oUT7qdXRf9Yjrdw/hwuHkns3bk33/wn7r33Ti65
+ZBw/+MEPV8v/5JOPufPO23jttf9SW7uUPn3K2WWX3TjuuBMpKyvLW70KHXgAtLiuO4CZbUlo6di6
+tftqTnFxEcXFrd6NtFJJSbwTrkpKiikt1SQvkTVBSUkxvSr6U7HeoFiPGec9JpFIMGXKZPbe+0dM
+njyJvfbae5X8995zfvWrEzn88CP4y18eoHfv3vzvf+9z9dXjOe20X3LXXfflrYWm0IFHJd+0VjSo
+AJJRXqobgIvcPT2dlLIVhIGlDcqBL7OpUHl5d4qKFHgUWllZt9iP16dP91iPKSKFEff9peGY2d5j
+5s6dyyWXXML06dNJJpPssccenH/++YwdO5a6ujquueYaAF544QVGjhzJ5MmTWXfddQF4+umn6dy5
+E2PGjGavvfZi+fLF9Ov3zZi5a64Zz+6778Z5530ziXSHHYby5z/fyqWXXhqV36ANznx1hQ48XgMG
+mll5yrTXHYB33H1lABFNud0V2NLMLo6SewAJMzso2mYBYTzHp9E2WwOdo2NkrKpqiVo82oGamtrY
+j1ddnd6zJyIdUdz3l4ZjZnuPOfnkU9hmm6H885+Ps3TpEi644DwuvfRyfv3rMxk27DCeeup5hgzZ
+hksvvYxTTz2dLl16rjzG/fdPZK+99qVLl54MGbIN9903kWOPPQGA6upqpk2bxo033tZonX7zmzFR
+uezviZkEVwUNPNx9hplNBcaZ2SigP3AmcCWAmc0idK+8DKSHXlcTgowr3D1hZrcAY8zsNaCWML32
+b020kDQpkUiSSCRbc1rSBurrE7Efr64u3mOKSGHEfX9pOGY295hZs97hww8/4MYb/0xxcSk9evTi
+2GN/yahRIxg16lxOO20kf/zjFey77wH06tWbgw46dOX+q6rm89JLL3Lyyb+mri7BvvsewN13385R
+Rx0HwCeffEpRURH9+29QkPteoVs8AA4HbgXmAQuBG939pihvM6CHuyeBuakbmdlSoCYlsLiQ0Ary
+BlACPAKcmv/qi4iItK05cz6jvr6e/ff/ZlBoMgnJZIKFCxew334HMmXKY9x2203ceed9q2w7efIj
+DBq0GRtuuBEAP/jBnlx11RVMn/46Q4duR8NogkIEYNAOAo9o3Y0DmsgraWa749L+XgGMiP6JiIh8
+a3Xp0oW11lqLJ554rtH8FStWMH9+JZ06lTJ37hwGDtxwZd5jj01i3rzP2Xvv3VYpP3nyJIYO3Y4B
+AzYgmUzy0Ucf0Ldv/BM/NYxfRESknVl//QHU1tYyb97nK9OWLl1KTc1CAO6668+ss866nHfeWK68
+8nJqa8O4lenTX2fevM+55ZY7ufPO+1b+Gz36Ap577mmWLl1CWVkvhg7djr/+9S+rHffrr7/mhBOO
+5u2338zbuSnwEBERaWc22WQQW289hGuuGc/ChQtYtGgRV155OZdeOpbZsz/igQfuZ9Soc9h99z3Z
+cMONuemm6wB49NF/sNNOO7PZZkb//gNW/ttnn/1Ya63uPPnkEwCcccbZzJz5Fr/73flUVn5JMpnk
+/feds88+nW7durHFFlvl7dwK3tUiIiISt4Xz57T7Y40deylXXXUFRxxxMJ07d2b77Xfg3HPHMmbM
+b/jpT39G//4DABg58myOP/7n7LHHXjz//LOMHXvZavsqKSnhRz86gMmTJ3HwwYcyaNCm3HLLnfz5
+zzdz/PFH8fXXtayzTj/23vtHDB9+DCUlTY50aLWiZFIzOFJVVi7SBWkHpk9/nWtfvCmWZ7V89dEX
+nP79U/SQOJE1hJZMz5+11+7Z4noUavEQEZE1SufOnfVFo4A0xkNERERio8BDREREYqPAQ0RERGKj
+wENERERio8BDREREYqPAQ0RERGKjwENERERio8BDREREYqMFxEREZI2ilUsLS4GHiIisUWbOfIuL
+J15G7/4VsRxvwZz5XHjkmJxWS501613uued23nhjBsuWfU1FRV92220PjjnmeHr06JGH2uafAg8R
+EVnj9O5fEcuzoFpj6tRXOO+833DccScxevSF9OzZk08+mc3110/gV786nltuuYtu3boVuppZ0xgP
+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
+vYBDzGxkeiEzWw94HVgBJBvZz+XAUGBHYHPCud2RnyqLiIhILgoaeJjZ9sAQ4Bx3X+zuHwBXASc1
+Unxt4DfARUBR2n5KgOOBi919rrsvAMYAB5rZunk8BREREclCoVs8tgVmu3tNSto0wKJulZXc/U13
+f6SJ/QwCyoDpKeUdqAW2a9sqi4iISK4KPcajAqhOS2sYk9EXWJLFfmhkX9XRfjJWXFxEcXFRywXX
+UCUlhY5V86OkpJjS0o55biIi7UmhAw9I6zYp9L7Ky7tTVKTAoyllZd0KXYW8KCvrRp8+3VsuKCIi
+rVLowKOSb1orGlQQBo9WZrmfhm2XpqSXA19mU6GqqiVq8WhGTU1toauQFzU1tVRXZ9rAJiIijcnk
+C1yhA4/XgIFmVp4y7XUH4B13X9rMdumzWj4EFhDGc3wKYGZbA52jY2QskUiSSDQ2aUYA6usTha5C
+XtTXJ6ir65jnJiLSnhS0U9vdZwBTgXFm1tPMBgNnEtb1wMzeNbOd0zYrIq1Lxd0TwC3AGDMbYGYV
+hOm1f3P3bFpOREREJI/aw2i6w4H+wDzgaeBOd78pytsc6AFgZmPMrBZ4l9Di8YaZLTWz86KyFwKv
+AG8AHwALgRNjOwsRERFpUaG7WnD3uYTVRhvLK0n5/TLgsmb2swIYEf0TERGRdqg9tHiIiIjIGkKB
+h4iIiMRGgYeIiIjERoGHiIiIxEaBh4iIiMRGgYeIiIjERoGHiIiIxEaBh4iIiMRGgYeIiIjERoGH
+iIiIxEaBh4iIiMRGgYeIiIjEpuAPiZNVLV++nJkz34rlWFtt9R06d+4cy7FERERAgUe7M3PmW1w8
+8TJ696/I63EWzJnPhUeOYejQ7fJ6HBERkVQKPNqh3v0r6Ltxv0JXQ0REpM1pjIeIiIjERoGHiIiI
+xEaBh4iIiMRGgYeIiIjERoGHiIiIxEaBh4iIiMRGgYeIiIjERoGHiIiIxEaBh4iIiMSm4CuXmtlA
+4AZgJ2ARMNHdRzdR9nTgVGBd4E1gpLtPi/KeBXYG6oCiaJNZ7j40rycgIiIiGWsPLR4PA58CGwF7
+AYeY2cj0Qmb2Y2AscBTQD3gUeNTMukVFksAJ7r6Wu3eL/hU06FiyZDFLliwuZBVERETalYIGHma2
+PTAEOMfdF7v7B8BVwEmNFD8JuMPdX3P3ZcCVhGDjxyllihrZriAeeeQfnHjiMZx44jE8+ug/Cl0d
+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
+">
+</img></div>
+</div>
 </div>
 </div>
 </div>
