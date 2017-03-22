@@ -986,7 +986,7 @@ Motivation for this post originates from my interest in working with &lt;a href=
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="openSNP-data-dump"&gt;openSNP data dump&lt;a class="anchor-link" href="#openSNP-data-dump"&gt;¶&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="Download-the-openSNP-data"&gt;Download the openSNP data&lt;a class="anchor-link" href="#Download-the-openSNP-data"&gt;¶&lt;/a&gt;&lt;/h2&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -996,7 +996,7 @@ Motivation for this post originates from my interest in working with &lt;a href=
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;openSNP has over 40 GB of genotype &amp; phenotype data stored as text files!&lt;br&gt;
-For the purposes of this demo, the analysis will be limited to only the &lt;strong&gt;23&amp;Me;&lt;/strong&gt; files.  Below are a few shell commands to get the raw data, create a directory and extract 23&amp;me; files.&lt;/br&gt;&lt;/p&gt;
+For the purposes of this demo, the analysis will be limited to only the 23andMe files.  Below are a few shell commands to get the raw data, create a directory and extract 23andMe files.&lt;/br&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1005,16 +1005,16 @@ For the purposes of this demo, the analysis will be limited to only the &lt;stro
 &lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%sh&lt;/span&gt;
-&lt;span class="n"&gt;wget&lt;/span&gt; &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;opensnp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;opensnp_datadump&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;current&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zip&lt;/span&gt;
-&lt;span class="n"&gt;unzip&lt;/span&gt; &lt;span class="n"&gt;opensnp_datadump&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;current&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zip&lt;/span&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;%%sh
+wget https://opensnp.org/data/zip/opensnp_datadump.current.zip
+unzip opensnp_datadump.current.zip
 
 &lt;span class="c1"&gt;# Isolate the 23&amp;me; files&lt;/span&gt;
-&lt;span class="n"&gt;mkdir&lt;/span&gt; &lt;span class="n"&gt;gt23&lt;/span&gt;
-&lt;span class="n"&gt;mv&lt;/span&gt; &lt;span class="n"&gt;opensnp_datadump&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;current&lt;/span&gt;&lt;span class="o"&gt;/*.&lt;/span&gt;&lt;span class="mi"&gt;23&lt;/span&gt;&lt;span class="n"&gt;andme&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;txt&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;gt23&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+mkdir gt23
+mv opensnp_datadump.current/*.23andme.txt* gt23/
 
 &lt;span class="c1"&gt;# how many 23&amp;me; genotype files?&lt;/span&gt;
-&lt;span class="n"&gt;find&lt;/span&gt; &lt;span class="n"&gt;gt23&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;type&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;wc&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt;
+find gt23/ -type f &lt;span class="p"&gt;|&lt;/span&gt; wc -l
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1025,7 +1025,7 @@ For the purposes of this demo, the analysis will be limited to only the &lt;stro
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Here's a look at an example &lt;strong&gt;23&amp;Me;&lt;/strong&gt; result file, the header is commented out with &lt;code&gt;#&lt;/code&gt; then there are 600,000+ rows of genotype data.&lt;/p&gt;
+&lt;p&gt;Here's a look at an example 23andMe result file, the header is commented out with &lt;code&gt;#&lt;/code&gt; then there are 600,000+ rows of genotype data.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1043,7 +1043,7 @@ For the purposes of this demo, the analysis will be limited to only the &lt;stro
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="manageable-test-set"&gt;manageable test set&lt;a class="anchor-link" href="#manageable-test-set"&gt;¶&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="Extract-a-reasonable-test-set"&gt;Extract a reasonable test set&lt;a class="anchor-link" href="#Extract-a-reasonable-test-set"&gt;¶&lt;/a&gt;&lt;/h2&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1052,7 +1052,7 @@ For the purposes of this demo, the analysis will be limited to only the &lt;stro
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;For the first exercise, let's use a manageable subset of the full openSNP data.&lt;/p&gt;
+&lt;p&gt;For this demo exercise, let's use a manageable subset of the full openSNP data.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1061,9 +1061,9 @@ For the purposes of this demo, the analysis will be limited to only the &lt;stro
 &lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%sh&lt;/span&gt;
-&lt;span class="n"&gt;mkdir&lt;/span&gt; &lt;span class="n"&gt;gt23_testset&lt;/span&gt;
-&lt;span class="n"&gt;cp&lt;/span&gt; &lt;span class="n"&gt;gt23&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;user21&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;gt23_testset&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;%%sh
+mkdir gt23_testset
+cp gt23/user21* gt23_testset/
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1086,8 +1086,8 @@ For the purposes of this demo, the analysis will be limited to only the &lt;stro
 &lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%sh&lt;/span&gt;
-&lt;span class="n"&gt;du&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="n"&gt;gt23_testset&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;%%sh
+du -h gt23_testset/
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1138,26 +1138,26 @@ For the purposes of this demo, the analysis will be limited to only the &lt;stro
 &lt;div class="prompt input_prompt"&gt;In [6]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time&lt;/span&gt;
-&lt;span class="n"&gt;gtdf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DataFrame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="c1"&gt;#empty DataFrame&lt;/span&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt;
+gtdf = pd.DataFrame(index=['rsid']) #empty DataFrame
 
-&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;file_&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;allFiles&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="c1"&gt;#extract the userid&lt;/span&gt;
-    &lt;span class="n"&gt;match&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;re&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;search&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'user(\d+)'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;file_&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="n"&gt;userid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;match&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+for file_ in allFiles:
+    #extract the userid
+    match = re.search('user(\d+)', file_)
+    userid = match.group(1)
     
-    &lt;span class="n"&gt;df&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;file_&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
-                     &lt;span class="n"&gt;comment&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'#'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
-                     &lt;span class="n"&gt;sep&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="se"&gt;\t&lt;/span&gt;&lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
-                     &lt;span class="n"&gt;header&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                     &lt;span class="n"&gt;usecols&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
-                     &lt;span class="n"&gt;error_bad_lines&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                     &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;userid&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
-                     &lt;span class="n"&gt;dtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                            &lt;span class="s1"&gt;'genotype'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
-                     &lt;span class="n"&gt;index_col&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-                    &lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="n"&gt;gtdf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;gtdf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;how&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'outer'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    df = pd.read_csv(file_, 
+                     comment='#', 
+                     sep='\t', 
+                     header=None,
+                     usecols=[0,3],
+                     error_bad_lines=False,
+                     names=['rsid', userid],
+                     dtype={'rsid':object,
+                            'genotype':object},
+                     index_col=['rsid']
+                    )
+    gtdf = gtdf.join(df, how='outer')
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1352,7 +1352,7 @@ Wall time: 8min 15s
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;On the test set of 43 files, the entire &lt;code&gt;DataFrame&lt;/code&gt; fits into memory.
-However, using this pure pandas method on the full set of 1,915 files would eventually 
+However, using this pure pandas method on the entire openSNP data set of 1,915 files would eventually 
 crash the computer because it would run out of pyhsical memory.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1371,8 +1371,16 @@ crash the computer because it would run out of pyhsical memory.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Enter &lt;a href="http://dask.pydata.org/en/latest/index.html"&gt;dask&lt;/a&gt;, a parallel Python library that implements out-of-core DataFrames.  It's API is similar to pandas, with a few additional methods and arguments.
-This code will read the same files in parallel and create a "lazy" &lt;code&gt;DataFrame&lt;/code&gt; that isn't computed until explicity executed.&lt;/p&gt;
+&lt;p&gt;Enter &lt;a href="http://dask.pydata.org/en/latest/index.html"&gt;dask&lt;/a&gt;, a parallel Python library that implements out-of-core DataFrames.  It's API is similar to pandas, with a few additional methods and arguments.  Dask creates a computation graph that will read the same files in parallel and create a "lazy" &lt;code&gt;DataFrame&lt;/code&gt; that isn't executed until &lt;code&gt;comptue()&lt;/code&gt; is explicitly called.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;&lt;img alt="Dask Graph" src="http://dask.pydata.org/en/latest/_images/pipeline.png" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1392,17 +1400,18 @@ This code will read the same files in parallel and create a "lazy" &lt;code&gt;D
 &lt;div class="prompt input_prompt"&gt;In [9]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time &lt;/span&gt;
-&lt;span class="c1"&gt;# won't actually read the csv's yet...&lt;/span&gt;
-&lt;span class="n"&gt;ddf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'gt23_testset/*.txt'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                  &lt;span class="n"&gt;comment&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'#'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
-                  &lt;span class="n"&gt;sep&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="se"&gt;\t&lt;/span&gt;&lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
-                  &lt;span class="n"&gt;header&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                  &lt;span class="n"&gt;usecols&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
-                  &lt;span class="n"&gt;error_bad_lines&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                  &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'genotype'&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
-                  &lt;span class="n"&gt;dtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                         &lt;span class="s1"&gt;'genotype'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt; 
+# won't actually read the csv's yet...
+# similar read_csv() as pandas
+ddf = dd.read_csv('gt23_testset/*.txt',
+                  comment='#', 
+                  sep='\t', 
+                  header=None,
+                  usecols=[0,3],
+                  error_bad_lines=False,
+                  names=['rsid', 'genotype'],
+                  dtype={'rsid':object,
+                         'genotype':object})
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1424,7 +1433,7 @@ Wall time: 298 ms
 &lt;div class="prompt input_prompt"&gt;In [10]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# 1 partition per file&lt;/span&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Dask defaults to 1 partition per file&lt;/span&gt;
 &lt;span class="n"&gt;ddf&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -1445,9 +1454,9 @@ Wall time: 298 ms
 &lt;div class="prompt input_prompt"&gt;In [11]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time&lt;/span&gt;
-&lt;span class="c1"&gt;#  this operation is expensive&lt;/span&gt;
-&lt;span class="n"&gt;ddf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ddf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_index&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt;
+#  this operation is expensive
+ddf = ddf.set_index('rsid')
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1479,9 +1488,9 @@ Remember, in contrast to &lt;code&gt;gtdf&lt;/code&gt;, &lt;code&gt;ddf&lt;/code
 &lt;div class="prompt input_prompt"&gt;In [12]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time&lt;/span&gt;
-&lt;span class="c1"&gt;# dask DataFrame&lt;/span&gt;
-&lt;span class="n"&gt;ddf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rs1333525'&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s1"&gt;'genotype'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value_counts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;compute&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt;
+# dask DataFrame
+ddf.loc['rs1333525']['genotype'].value_counts().compute()
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1511,9 +1520,9 @@ Name: genotype, dtype: int64&lt;/pre&gt;
 &lt;div class="prompt input_prompt"&gt;In [13]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time&lt;/span&gt;
-&lt;span class="c1"&gt;# pure pandas DataFrame&lt;/span&gt;
-&lt;span class="n"&gt;gtdf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rs1333525'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value_counts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt;
+# pure pandas DataFrame
+gtdf.loc['rs1333525'].value_counts()
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1543,8 +1552,7 @@ Name: rs1333525, dtype: int64&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;If you consider the 3 minutes 46 seconds to compute the &lt;code&gt;value_counts()&lt;/code&gt;, the parallel dask method was slightly slower than the 1 minutes 1 second
-that it took pure pandas to create the &lt;code&gt;gtdf&lt;/code&gt; &lt;code&gt;DataFrame&lt;/code&gt;.  At first blush, the computation times are deceiving.  As expected, the dask method took longer because of the lazy computation, it still had to read all the files and then perform the operation.  The real benefit of &lt;code&gt;dask&lt;/code&gt; comes into play when you can't fit the DataFrame into memory.&lt;/p&gt;
+&lt;p&gt;At first blush, the computation times are deceiving.  As expected, the dask method took longer because of the lazy computation, it still had to read all the files and then perform the operation.  However, when you consider the &lt;strong&gt;8 minutes 15 seconds&lt;/strong&gt; required to join &lt;code&gt;gtdf&lt;/code&gt; DataFrame from &lt;em&gt;cell 6&lt;/em&gt; above in addtion to the &lt;strong&gt;1 minute 1 second&lt;/strong&gt; for &lt;code&gt;gtdf.loc[rs13333525'].value_counts()&lt;/code&gt;, that's &lt;strong&gt;9 minutes 16 seconds&lt;/strong&gt;.  In contrast, the dask method required 3 steps.  First setting the computation graph (&lt;em&gt;cell 9&lt;/em&gt;) was &lt; 1 second.  So the real comparison comes from the &lt;strong&gt;4 minutes 45 seconds&lt;/strong&gt; to set the index (&lt;em&gt;cell 10&lt;/em&gt;) and &lt;strong&gt;3 minutes 46 seconds&lt;/strong&gt; to perform &lt;code&gt;ddf.loc['rs1333525']['genotype'].value_counts().compute()&lt;/code&gt; (&lt;em&gt;cell 12&lt;/em&gt;) for a grand total of &lt;strong&gt;8 minutes 31 seconds&lt;/strong&gt;. Seems like a marginal speedup on our test data of only 43 files.  The real power of &lt;code&gt;dask&lt;/code&gt; comes into play when you can't fit the DataFrame into memory.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1562,19 +1570,19 @@ that it took pure pandas to create the &lt;code&gt;gtdf&lt;/code&gt; &lt;code&gt
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;It would be nice to speed up the dask queries so we can work with the &lt;code&gt;DataFrame&lt;/code&gt; for downstream analysis.
-The solution is to store the data on disk in an efficient format (binary).  A popular choice for this is traditionally &lt;a href="https://support.hdfgroup.org/HDF5/doc/H5.intro.html"&gt;HDF5&lt;/a&gt;, but I chose to use &lt;a href="https://parquet.apache.org/"&gt;parquet&lt;/a&gt; becuase 
+&lt;p&gt;It would be nice to speed up the dask queries so we can work with the &lt;code&gt;DataFrame&lt;/code&gt; for downstream analysis in a reasonable amount of time.
+The solution is to store the raw text data on disk in an efficient binary format.  A popular choice for this is traditionally &lt;a href="https://support.hdfgroup.org/HDF5/doc/H5.intro.html"&gt;HDF5&lt;/a&gt;, but I chose to use &lt;a href="https://parquet.apache.org/"&gt;parquet&lt;/a&gt; becuase 
 HDF5 can be tricky to work with.  Dask uses the &lt;a href="http://fastparquet.readthedocs.io/en/latest/index.html"&gt;fastparquet&lt;/a&gt; implementation.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [13]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [14]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time&lt;/span&gt;
-&lt;span class="n"&gt;dd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_parquet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'gt23test_pq/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ddf&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt;
+dd.to_parquet('gt23test_pq/', ddf)
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1603,7 +1611,7 @@ Revisiting the dask DataFrame, &lt;code&gt;ddf&lt;/code&gt;, remember that took 
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [14]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [15]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# using dask with fastparquet, lazy, so nothing computed here...&lt;/span&gt;
@@ -1615,11 +1623,11 @@ Revisiting the dask DataFrame, &lt;code&gt;ddf&lt;/code&gt;, remember that took 
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [15]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [16]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time&lt;/span&gt;
-&lt;span class="n"&gt;pqdf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rs1333525'&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s1"&gt;'genotype'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value_counts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;compute&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt;
+pqdf.loc['rs1333525']['genotype'].value_counts().compute()
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1633,7 +1641,7 @@ Wall time: 11.7 s
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[15]:&lt;/div&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[16]:&lt;/div&gt;
 &lt;div class="output_text output_subarea output_execute_result"&gt;
 &lt;pre&gt;CC    37
 CT     5
@@ -1649,7 +1657,7 @@ Name: genotype, dtype: int64&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Parquet offers a noticeable performance increase, a savings of &gt;3 minutes, even with this small validation set of 43 files.  Scaling this up to 1,915 files, the parallel &lt;code&gt;.txt&lt;/code&gt; version, &lt;code&gt;ddf&lt;/code&gt;, took 5+ hours to execute &lt;code&gt;value_counts()&lt;/code&gt; for one SNP.
+&lt;p&gt;Parquet offers a noticeable performance increase for querying data, even with this small validation set of 43 files.  Scaling this up to 1,915 files, the parallel &lt;code&gt;.txt&lt;/code&gt; version, &lt;code&gt;ddf&lt;/code&gt;, took 5+ hours to execute &lt;code&gt;value_counts()&lt;/code&gt; for one SNP.
 &lt;code&gt;to_parquet&lt;/code&gt; on the 1,915 file &lt;code&gt;DataFrame&lt;/code&gt; took a couple hours.  Once you see the query performance improvements, it's well worth the up-front cost of converting from &lt;code&gt;.txt&lt;/code&gt; or &lt;code&gt;.csv&lt;/code&gt; to parquet.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1659,7 +1667,7 @@ Name: genotype, dtype: int64&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="Performance-on-full-data-set"&gt;Performance on full data set&lt;a class="anchor-link" href="#Performance-on-full-data-set"&gt;¶&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="query performance" src="images/dask-parquet-query.jpg" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1668,17 +1676,26 @@ Name: genotype, dtype: int64&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;I pre-computed the parquet files using the commands above.&lt;/p&gt;
+&lt;h2 id="Performance-on-the-entire-openSNP-data-set"&gt;Performance on the entire openSNP data set&lt;a class="anchor-link" href="#Performance-on-the-entire-openSNP-data-set"&gt;¶&lt;/a&gt;&lt;/h2&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;I pre-computed the parquet files for the entire &lt;code&gt;gt23&lt;/code&gt; directory using the same commands above.  Some malformed files needed to be cleaned and/or removed.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [16]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [17]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%sh&lt;/span&gt;
-&lt;span class="n"&gt;find&lt;/span&gt; &lt;span class="n"&gt;gt23_pq&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;type&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;wc&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;%%sh
+find gt23_pq/ -type f &lt;span class="p"&gt;|&lt;/span&gt; wc -l
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1696,7 +1713,7 @@ Name: genotype, dtype: int64&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [17]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [18]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;allpqdf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_parquet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'gt23_pq/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -1707,11 +1724,11 @@ Name: genotype, dtype: int64&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [18]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [19]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#%%time&lt;/span&gt;
-&lt;span class="n"&gt;allpqdf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rs1333525'&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s1"&gt;'genotype'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value_counts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;compute&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%%&lt;/span&gt;&lt;span class="k"&gt;time&lt;/span&gt;
+allpqdf.loc['rs1333525']['genotype'].value_counts().compute()
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1725,7 +1742,7 @@ Wall time: 7.2 s
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[18]:&lt;/div&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[19]:&lt;/div&gt;
 &lt;div class="output_text output_subarea output_execute_result"&gt;
 &lt;pre&gt;CC    1625
 CT     277
@@ -1751,7 +1768,7 @@ By now you've probably noticed I wasn't able to assign the user identifier to ea
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="Efficient-downstream-analysis"&gt;Efficient downstream analysis&lt;a class="anchor-link" href="#Efficient-downstream-analysis"&gt;¶&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="Implemenation-on-the-entire-openSNP-dataset"&gt;Implemenation on the entire openSNP dataset&lt;a class="anchor-link" href="#Implemenation-on-the-entire-openSNP-dataset"&gt;¶&lt;/a&gt;&lt;/h2&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1760,14 +1777,14 @@ By now you've probably noticed I wasn't able to assign the user identifier to ea
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;I wanted to show how easy dask and parquet make it to quickly compare variant frequencies in the openSNP data to &lt;a href="http://exac.broadinstitute.org/"&gt;exAC&lt;/a&gt; data.
+&lt;p&gt;The dask and parquet portion of the tutorial have concluded.  I wanted to show how easy dask and parquet make it to quickly compare variant frequencies in the openSNP data to &lt;a href="http://exac.broadinstitute.org/"&gt;exAC&lt;/a&gt; data.
 Here we'll define a function to extract variant frequencies from exAC, then compare to openSNP frequencies.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [19]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [20]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;urllib.parse&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;urlparse&lt;/span&gt;
@@ -1781,7 +1798,7 @@ Here we'll define a function to extract variant frequencies from exAC, then comp
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [20]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [21]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;ExacFrequency&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rsid&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
@@ -1806,7 +1823,7 @@ Here we'll define a function to extract variant frequencies from exAC, then comp
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [21]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [22]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;brca2snps&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rs766173'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'rs144848'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'rs11571746'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'rs11571747'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -1818,7 +1835,7 @@ Here we'll define a function to extract variant frequencies from exAC, then comp
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [22]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [23]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;df&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DataFrame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rsid'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'gt'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'source'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'varFreq'&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
@@ -1829,7 +1846,7 @@ Here we'll define a function to extract variant frequencies from exAC, then comp
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [23]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [24]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;snp&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;brca2snps&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -1859,7 +1876,7 @@ Here we'll define a function to extract variant frequencies from exAC, then comp
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [24]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [25]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="k"&gt;pylab&lt;/span&gt; inline
@@ -2184,7 +2201,7 @@ JElSaww8JElSaww8JElSaww8JElSaww8JElSa/4Ho4GCnFupnCUAAAAASUVORK5CYII=
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;In my next post, I'll focus on working with some of the phenotype groups identified in the opensnp data.  Thanks for reading, comments and code improvements welcome!&lt;/p&gt;
+&lt;p&gt;I hope you find this post useful and think about using dask and parquet when working with structured text files.  I really encourage you to check out the dask and parquet documentation and follow along on some of their tutorials.  Thanks for reading, comments and code improvements welcome!&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -2216,4 +2233,4 @@ JElSaww8JElSaww8JElSaww8JElSaww8JElSa/4Ho4GCnFupnCUAAAAASUVORK5CYII=
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="dask"></category><category term="parquet"></category><category term="genomics"></category><category term="bioinformatics"></category></entry></feed>
+</content><category term="python"></category><category term="dask"></category><category term="parquet"></category><category term="genomics"></category><category term="bioinformatics"></category></entry></feed>

@@ -5,11 +5,10 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="author" content="Kevin Arvai" />
-        <meta name="description" content="" />
+    <meta name="keywords" content="python" />
 
 
-    <title>Blogging Bioinformatics - Articles by Kevin Arvai</title>
+    <title>python - Blogging Bioinformatics</title>
 
         <link rel="stylesheet" href="https://arvkevi.github.io/theme/css/bootstrap.spacelab.min.css" type="text/css"/>
 
@@ -151,54 +150,21 @@
         <!-- Page Content -->
         <div id="page-content-wrapper">
             <div class="container-fluid">
-<section id="content" class="body">
-    <div class="row">
-        <div class="col-lg-9">
-            <div class="jumbotron">  
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1>Blogging Bioinformatics</h1>
-                        <p></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="row">
+    <div class="col-lg-9">
+        <header class="page-header">
+            <h1>Articles featuring python</h1>
+        </header>
     </div>
-    <div class="row">
-        <div class="col-lg-9">
-            <h2>Recent Articles:</h2>
-        </div>
-    </div>
-</section>
+</div>
 <div class="row">
     <div class="col-lg-9">
             <article>
-                <h2>
+                <h4>
+                    <time datetime="2017-01-27T00:00:00-05:00"> Fri 27 January 2017</time>
                     <a href="https://arvkevi.github.io/Out_of_Core_Genomics.html">Out of Core Genomics</a>
-<div class="post-info">
-    <div class="publish-info-block">
-        <small>
-            <span class="published">
-                <i class="fa fa-calendar padding-small"></i><time datetime="2017-01-27T00:00:00-05:00"> Fri 27 January 2017</time>
-            </span>
-            <span class="category">
-                <i class="fa fa-folder-open padding-small"></i><a href="https://arvkevi.github.io/category/computation.html">computation</a>
-            </span>
-            <span class="tags">
-                <i class="fa fa-tags padding-small"></i>
-                <a href="https://arvkevi.github.io/tag/python.html">python</a> /                 <a href="https://arvkevi.github.io/tag/dask.html">dask</a> /                 <a href="https://arvkevi.github.io/tag/parquet.html">parquet</a> /                 <a href="https://arvkevi.github.io/tag/genomics.html">genomics</a> /                 <a href="https://arvkevi.github.io/tag/bioinformatics.html">bioinformatics</a>            </span>
-        </small>
-    </div>
-</div><!-- /.post-info -->                </h2>
-                <div class="summary">
-                    <p>Out of core computing for genomics</p>
-                </div>
+                </h4>
             </article>
-        <div class="btn-more text-right">
-            <a class="btn btn-default btn-xs twitchy-background" href="https://arvkevi.github.io/archives.html">
-                View all Articles ...
-            </a>
-        </div>
     </div>
 </div>
 <footer>
@@ -250,8 +216,10 @@
             }
         });
     }
+
     articles = $("article").fadeTo(0, 0.05);
     FadeInOnScroll(articles)
+
     $(window).scroll(function() {
         FadeInOnScroll(articles)
     });
