@@ -1157,29 +1157,6 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [6]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;%%bash
-zgrep -m &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="s1"&gt;'ID=GC_NFE'&lt;/span&gt; gnomad.genomes.r2.0.1.sites.22.vcf.gz
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="output_wrapper"&gt;
-&lt;div class="output"&gt;
-&lt;div class="output_area"&gt;
-&lt;div class="prompt"&gt;&lt;/div&gt;
-&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;##INFO=&lt;id=gc_nfe,number=g,type=integer,description=&amp;quot;count each="" european="" for="" genotype&amp;quot;="" individuals="" non-finnish="" of=""&gt;
-&lt;/id=gc_nfe,number=g,type=integer,description=&amp;quot;count&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;In [7]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
@@ -1507,7 +1484,7 @@ we're assuming it represents homozygous alternate allele state, or &lt;strong&gt
 &lt;div class="prompt output_prompt"&gt;Out[19]:&lt;/div&gt;
 &lt;div class="output_html rendered_html output_subarea output_execute_result"&gt;
 &lt;div&gt;
-&lt;table border="1" class="table-hover dataframe  table-striped table"&gt;
+&lt;table border="1" class="table table-hover  table-striped dataframe"&gt;
 &lt;thead&gt;
 &lt;tr style="text-align: right;"&gt;
 &lt;th&gt;&lt;/th&gt;
@@ -1703,7 +1680,7 @@ we're assuming it represents homozygous alternate allele state, or &lt;strong&gt
             }
         
         &lt;/style&gt;
-&lt;table class="table-hover  table-striped table" id="T_6de0532c_60c5_11e7_8ecb_42010a8e0002" none=""&gt;
+&lt;table class="table table-hover  table-striped" id="T_6de0532c_60c5_11e7_8ecb_42010a8e0002" none=""&gt;
 &lt;thead&gt;
 &lt;tr&gt;
 &lt;th class="blank level0"&gt;
