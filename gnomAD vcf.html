@@ -1233,8 +1233,8 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># get the smallest gnomAD .vcf file, chr22</span>
-<span class="err">$</span> <span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">storage</span><span class="o">.</span><span class="n">googleapis</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">gnomad</span><span class="o">-</span><span class="n">public</span><span class="o">/</span><span class="n">release</span><span class="o">-</span><span class="mi">170228</span><span class="o">/</span><span class="n">coverage</span><span class="o">/</span><span class="n">genomes</span><span class="o">/</span><span class="n">gnomad</span><span class="o">.</span><span class="n">chr22</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span>
-<span class="err">$</span> <span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">storage</span><span class="o">.</span><span class="n">googleapis</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">gnomad</span><span class="o">-</span><span class="n">public</span><span class="o">/</span><span class="n">release</span><span class="o">-</span><span class="mi">170228</span><span class="o">/</span><span class="n">coverage</span><span class="o">/</span><span class="n">genomes</span><span class="o">/</span><span class="n">gnomad</span><span class="o">.</span><span class="n">chr22</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span><span class="o">.</span><span class="n">tbi</span>
+<span class="o">!</span> wget https://storage.googleapis.com/gnomad-public/release-170228/coverage/genomes/gnomad.chr22.cov.txt.gz
+<span class="o">!</span> wget https://storage.googleapis.com/gnomad-public/release-170228/coverage/genomes/gnomad.chr22.cov.txt.gz.tbi
 </pre></div>
 </div>
 </div>
@@ -1722,7 +1722,7 @@ we're assuming it represents homozygous alternate allele state, or <strong><code
 <div class="prompt output_prompt">Out[19]:</div>
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<table border="1" class="table-hover  table-striped table dataframe">
+<table border="1" class="table-hover dataframe  table-striped table">
 <thead>
 <tr style="text-align: right;">
 <th></th>
