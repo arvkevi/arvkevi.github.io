@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Blogging Bioinformatics - computation</title><link href="https://arvkevi.github.io/" rel="alternate"></link><link href="https://arvkevi.github.io/feeds/computation.atom.xml" rel="self"></link><id>https://arvkevi.github.io/</id><updated>2017-01-27T00:00:00-05:00</updated><entry><title>Out of Core Genomics</title><link href="https://arvkevi.github.io/Out_of_Core_Genomics.html" rel="alternate"></link><published>2017-01-27T00:00:00-05:00</published><updated>2017-01-27T00:00:00-05:00</updated><author><name>Kevin Arvai</name></author><id>tag:arvkevi.github.io,2017-01-27:/Out_of_Core_Genomics.html</id><summary type="html">&lt;p&gt;Out of core computing for genomics&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Blogging Bioinformatics - computation</title><link href="https://arvkevi.github.io/" rel="alternate"></link><link href="https://arvkevi.github.io/feeds/computation.atom.xml" rel="self"></link><id>https://arvkevi.github.io/</id><updated>2017-01-27T00:00:00-05:00</updated><entry><title>Out of Core Genomics</title><link href="https://arvkevi.github.io/Out_of_Core_Genomics.html" rel="alternate"></link><published>2017-01-27T00:00:00-05:00</published><updated>2017-01-27T00:00:00-05:00</updated><author><name>Kevin Arvai</name></author><id>tag:arvkevi.github.io,2017-01-27:/Out_of_Core_Genomics.html</id><summary type="html">&lt;p&gt;Out of core computing for genomics&lt;/p&gt;</summary><content type="html">&lt;html&gt;&lt;head&gt;&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -156,6 +156,7 @@ div.cell.selected.jupyter-soft-selected {
   }
 }
 div.inner_cell {
+  min-width: 0;
   /* Old browsers */
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -176,11 +177,6 @@ div.inner_cell {
   box-flex: 1;
   /* Modern browsers */
   flex: 1;
-}
-@-moz-document url-prefix() {
-  div.inner_cell {
-    overflow-x: hidden;
-  }
 }
 /* input_area and input_prompt must match in top border and margin for alignment */
 div.input_area {
@@ -918,8 +914,10 @@ h6:hover .anchor-link {
 .highlight .mh { color: #666666 } /* Literal.Number.Hex */
 .highlight .mi { color: #666666 } /* Literal.Number.Integer */
 .highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
 .highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
 .highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
 .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
 .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
 .highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
@@ -930,9 +928,11 @@ h6:hover .anchor-link {
 .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
 .highlight .ss { color: #19177C } /* Literal.String.Symbol */
 .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
 .highlight .vc { color: #19177C } /* Name.Variable.Class */
 .highlight .vg { color: #19177C } /* Name.Variable.Global */
 .highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */&lt;/style&gt;
 &lt;style type="text/css"&gt;
 /* Temporary definitions which will become obsolete with Notebook release 5.0 */
@@ -971,8 +971,7 @@ h6:hover .anchor-link {
 
 .ansi-bold { font-weight: bold; }
 &lt;/style&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;/head&gt;&lt;body&gt;&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -981,8 +980,7 @@ Motivation for this post originates from my interest in working with &lt;a href=
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -990,13 +988,12 @@ Motivation for this post originates from my interest in working with &lt;a href=
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;openSNP has over 40 GB of genotype &amp; phenotype data stored as text files!&lt;br&gt;
-For the purposes of this demo, the analysis will be limited to only the 23andMe files.  Below are a few shell commands to get the raw data, create a directory and extract 23andMe files.&lt;/br&gt;&lt;/p&gt;
+&lt;p&gt;openSNP has over 40 GB of genotype &amp;amp; phenotype data stored as text files!&lt;br/&gt;
+For the purposes of this demo, the analysis will be limited to only the 23andMe files.  Below are a few shell commands to get the raw data, create a directory and extract 23andMe files.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1009,19 +1006,18 @@ For the purposes of this demo, the analysis will be limited to only the 23andMe 
 wget https://opensnp.org/data/zip/opensnp_datadump.current.zip
 unzip opensnp_datadump.current.zip
 
-&lt;span class="c1"&gt;# Isolate the 23&amp;me; files&lt;/span&gt;
+&lt;span class="c1"&gt;# Isolate the 23&amp;amp;me; files&lt;/span&gt;
 mkdir gt23
 mv opensnp_datadump.current/*.23andme.txt* gt23/
 
-&lt;span class="c1"&gt;# how many 23&amp;me; genotype files?&lt;/span&gt;
+&lt;span class="c1"&gt;# how many 23&amp;amp;me; genotype files?&lt;/span&gt;
 find gt23/ -type f &lt;span class="p"&gt;|&lt;/span&gt; wc -l
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1029,17 +1025,15 @@ find gt23/ -type f &lt;span class="p"&gt;|&lt;/span&gt; wc -l
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;&lt;img alt="raw data" src="images/23andMe_raw.JPG" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="raw data" class="img-responsive" src="images/23andMe_raw.JPG"/&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1047,8 +1041,7 @@ find gt23/ -type f &lt;span class="p"&gt;|&lt;/span&gt; wc -l
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1094,7 +1087,8 @@ du -h gt23_testset/
 &lt;/div&gt;
 &lt;div class="output_wrapper"&gt;
 &lt;div class="output"&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;766M	gt23_testset/
 &lt;/pre&gt;
@@ -1103,8 +1097,7 @@ du -h gt23_testset/
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1112,8 +1105,7 @@ du -h gt23_testset/
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1164,7 +1156,8 @@ for file_ in allFiles:
 &lt;/div&gt;
 &lt;div class="output_wrapper"&gt;
 &lt;div class="output"&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;CPU times: user 7min 48s, sys: 9.83 s, total: 7min 58s
 Wall time: 8min 15s
@@ -1186,10 +1179,11 @@ Wall time: 8min 15s
 &lt;/div&gt;
 &lt;div class="output_wrapper"&gt;
 &lt;div class="output"&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[7]:&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt output_prompt"&gt;Out[7]:&lt;/div&gt;
 &lt;div class="output_html rendered_html output_subarea output_execute_result"&gt;
 &lt;div&gt;
-&lt;table border="1" class="dataframe"&gt;
+&lt;table border="1" class="table-hover  table-striped table dataframe"&gt;
 &lt;thead&gt;
 &lt;tr style="text-align: right;"&gt;
 &lt;th&gt;&lt;/th&gt;
@@ -1346,8 +1340,7 @@ Wall time: 8min 15s
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1357,8 +1350,7 @@ crash the computer because it would run out of pyhsical memory.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1366,8 +1358,7 @@ crash the computer because it would run out of pyhsical memory.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1375,12 +1366,11 @@ crash the computer because it would run out of pyhsical memory.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;&lt;img alt="Dask Graph" src="http://dask.pydata.org/en/latest/_images/pipeline.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Dask Graph" class="img-responsive" src="http://dask.pydata.org/en/latest/_images/pipeline.png"/&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1418,7 +1408,8 @@ ddf = dd.read_csv('gt23_testset/*.txt',
 &lt;/div&gt;
 &lt;div class="output_wrapper"&gt;
 &lt;div class="output"&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;CPU times: user 112 ms, sys: 52 ms, total: 164 ms
 Wall time: 298 ms
@@ -1441,9 +1432,10 @@ Wall time: 298 ms
 &lt;/div&gt;
 &lt;div class="output_wrapper"&gt;
 &lt;div class="output"&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[10]:&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt output_prompt"&gt;Out[10]:&lt;/div&gt;
 &lt;div class="output_text output_subarea output_execute_result"&gt;
-&lt;pre&gt;dd.DataFrame&lt;from-de..., npartitions="43"&gt;&lt;/pre&gt;
+&lt;pre&gt;dd.DataFrame&lt;from-de..., npartitions="43"&gt;&lt;/from-de...,&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1463,7 +1455,8 @@ ddf = ddf.set_index('rsid')
 &lt;/div&gt;
 &lt;div class="output_wrapper"&gt;
 &lt;div class="output"&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;CPU times: user 4min 44s, sys: 23 s, total: 5min 7s
 Wall time: 4min 45s
@@ -1473,8 +1466,7 @@ Wall time: 4min 45s
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1497,14 +1489,16 @@ ddf.loc['rs1333525']['genotype'].value_counts().compute()
 &lt;/div&gt;
 &lt;div class="output_wrapper"&gt;
 &lt;div class="output"&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;CPU times: user 3min 31s, sys: 36.1 s, total: 4min 7s
 Wall time: 3min 46s
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[12]:&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt output_prompt"&gt;Out[12]:&lt;/div&gt;
 &lt;div class="output_text output_subarea output_execute_result"&gt;
 &lt;pre&gt;CC    37
 CT     5
@@ -1529,14 +1523,16 @@ gtdf.loc['rs1333525'].value_counts()
 &lt;/div&gt;
 &lt;div class="output_wrapper"&gt;
 &lt;div class="output"&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;CPU times: user 4.3 s, sys: 8.1 s, total: 12.4 s
 Wall time: 1min 1s
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[13]:&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt output_prompt"&gt;Out[13]:&lt;/div&gt;
 &lt;div class="output_text output_subarea output_execute_result"&gt;
 &lt;pre&gt;CC    37
 CT     5
@@ -1547,17 +1543,15 @@ Name: rs1333525, dtype: int64&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;At first blush, the computation times are deceiving.  As expected, the dask method took longer because of the lazy computation, it still had to read all the files and then perform the operation.  However, when you consider the &lt;strong&gt;8 minutes 15 seconds&lt;/strong&gt; required to join &lt;code&gt;gtdf&lt;/code&gt; DataFrame from &lt;em&gt;cell 6&lt;/em&gt; above in addtion to the &lt;strong&gt;1 minute 1 second&lt;/strong&gt; for &lt;code&gt;gtdf.loc[rs13333525'].value_counts()&lt;/code&gt;, that's &lt;strong&gt;9 minutes 16 seconds&lt;/strong&gt;.  In contrast, the dask method required 3 steps.  First setting the computation graph (&lt;em&gt;cell 9&lt;/em&gt;) was &lt; 1 second.  So the real comparison comes from the &lt;strong&gt;4 minutes 45 seconds&lt;/strong&gt; to set the index (&lt;em&gt;cell 10&lt;/em&gt;) and &lt;strong&gt;3 minutes 46 seconds&lt;/strong&gt; to perform &lt;code&gt;ddf.loc['rs1333525']['genotype'].value_counts().compute()&lt;/code&gt; (&lt;em&gt;cell 12&lt;/em&gt;) for a grand total of &lt;strong&gt;8 minutes 31 seconds&lt;/strong&gt;. Seems like a marginal speedup on our test data of only 43 files.  The real power of &lt;code&gt;dask&lt;/code&gt; comes into play when you can't fit the DataFrame into memory.&lt;/p&gt;
+&lt;p&gt;At first blush, the computation times are deceiving.  As expected, the dask method took longer because of the lazy computation, it still had to read all the files and then perform the operation.  However, when you consider the &lt;strong&gt;8 minutes 15 seconds&lt;/strong&gt; required to join &lt;code&gt;gtdf&lt;/code&gt; DataFrame from &lt;em&gt;cell 6&lt;/em&gt; above in addtion to the &lt;strong&gt;1 minute 1 second&lt;/strong&gt; for &lt;code&gt;gtdf.loc[rs13333525'].value_counts()&lt;/code&gt;, that's &lt;strong&gt;9 minutes 16 seconds&lt;/strong&gt;.  In contrast, the dask method required 3 steps.  First setting the computation graph (&lt;em&gt;cell 9&lt;/em&gt;) was &amp;lt; 1 second.  So the real comparison comes from the &lt;strong&gt;4 minutes 45 seconds&lt;/strong&gt; to set the index (&lt;em&gt;cell 10&lt;/em&gt;) and &lt;strong&gt;3 minutes 46 seconds&lt;/strong&gt; to perform &lt;code&gt;ddf.loc['rs1333525']['genotype'].value_counts().compute()&lt;/code&gt; (&lt;em&gt;cell 12&lt;/em&gt;) for a grand total of &lt;strong&gt;8 minutes 31 seconds&lt;/strong&gt;. Seems like a marginal speedup on our test data of only 43 files.  The real power of &lt;code&gt;dask&lt;/code&gt; comes into play when you can't fit the DataFrame into memory.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1565,8 +1559,7 @@ Name: rs1333525, dtype: int64&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1589,7 +1582,8 @@ dd.to_parquet('gt23test_pq/', ddf)
 &lt;/div&gt;
 &lt;div class="output_wrapper"&gt;
 &lt;div class="output"&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;CPU times: user 12min 35s, sys: 1min 41s, total: 14min 17s
 Wall time: 19min 30s
@@ -1599,8 +1593,7 @@ Wall time: 19min 30s
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1634,14 +1627,16 @@ pqdf.loc['rs1333525']['genotype'].value_counts().compute()
 &lt;/div&gt;
 &lt;div class="output_wrapper"&gt;
 &lt;div class="output"&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;CPU times: user 8.18 s, sys: 608 ms, total: 8.79 s
 Wall time: 11.7 s
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[16]:&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt output_prompt"&gt;Out[16]:&lt;/div&gt;
 &lt;div class="output_text output_subarea output_execute_result"&gt;
 &lt;pre&gt;CC    37
 CT     5
@@ -1652,8 +1647,7 @@ Name: genotype, dtype: int64&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1662,17 +1656,15 @@ Name: genotype, dtype: int64&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;&lt;img alt="query performance" src="images/dask-parquet-query.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="query performance" class="img-responsive" src="images/dask-parquet-query.jpg"/&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1680,8 +1672,7 @@ Name: genotype, dtype: int64&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1702,7 +1693,8 @@ find gt23_pq/ -type f &lt;span class="p"&gt;|&lt;/span&gt; wc -l
 &lt;/div&gt;
 &lt;div class="output_wrapper"&gt;
 &lt;div class="output"&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;1898
 &lt;/pre&gt;
@@ -1735,14 +1727,16 @@ allpqdf.loc['rs1333525']['genotype'].value_counts().compute()
 &lt;/div&gt;
 &lt;div class="output_wrapper"&gt;
 &lt;div class="output"&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;CPU times: user 6.67 s, sys: 112 ms, total: 6.78 s
 Wall time: 7.2 s
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[19]:&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt output_prompt"&gt;Out[19]:&lt;/div&gt;
 &lt;div class="output_text output_subarea output_execute_result"&gt;
 &lt;pre&gt;CC    1625
 CT     277
@@ -1753,8 +1747,7 @@ Name: genotype, dtype: int64&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1763,8 +1756,7 @@ By now you've probably noticed I wasn't able to assign the user identifier to ea
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1772,8 +1764,7 @@ By now you've probably noticed I wasn't able to assign the user identifier to ea
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -1888,15 +1879,17 @@ Here we'll define a function to extract variant frequencies from exAC, then comp
 &lt;/div&gt;
 &lt;div class="output_wrapper"&gt;
 &lt;div class="output"&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;Populating the interactive namespace from numpy and matplotlib
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_png output_subarea "&gt;
-&lt;img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAh4AAAF9CAYAAABLS2EjAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+&lt;img class="img-responsive" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAh4AAAF9CAYAAABLS2EjAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAPYQAAD2EBqD+naQAAIABJREFUeJzs3XecVNX5x/HPFprAArsoKogF9cESDOpPjUaNxhJLNLZI
 iBpLLNGgKCaiqBhbMBLFEnvs0aDGJCiKMXZjCQpYUB6NigVEV3ZhKSuwO/P749zFYdgyM7tzZ12+
 79eL1+6ec+69515m7jxz2i1KJpOIiIiIxKG40BUQERGRNYcCDxEREYmNAg8RERGJjQIPERERiY0C
@@ -2190,14 +2183,13 @@ ZOZQZn6VmU8B9wOPRsSUrkM3AxOAazvSTge6j5M0IBzjIWmgRMStwJqIeBD4HrgIuAXYkZlDEdF5
 +C/AdmBhRMwFJgIfAAfazbWkftnjIelsO2aWSmb+RE2v/RDYDWwBbgNmdyfMzP+AWcBUYBvwMzUj
 ZvMZz7WkUzJheHh47KMkSZJOA3s8JElSaww8JElSaww8JElSaww8JElSaww8JElSaww8JElSaww8
 JElSaww8JElSaww8JElSaww8JElSaww8JElSa/4Ho4GCnFupnCUAAAAASUVORK5CYII=
-"&gt;
-&lt;/img&gt;&lt;/div&gt;
+"/&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
@@ -2205,6 +2197,7 @@ JElSaww8JElSaww8JElSaww8JElSaww8JElSa/4Ho4GCnFupnCUAAAAASUVORK5CYII=
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
+
 &lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
@@ -2233,4 +2226,4 @@ JElSaww8JElSaww8JElSaww8JElSaww8JElSa/4Ho4GCnFupnCUAAAAASUVORK5CYII=
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</content><category term="python"></category><category term="dask"></category><category term="parquet"></category><category term="genomics"></category><category term="bioinformatics"></category></entry></feed>
+&lt;/body&gt;&lt;/html&gt;</content><category term="python"></category><category term="dask"></category><category term="parquet"></category><category term="genomics"></category><category term="bioinformatics"></category></entry></feed>
