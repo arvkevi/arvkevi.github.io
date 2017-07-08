@@ -1290,7 +1290,7 @@ h6:hover .anchor-link {
     <span class="sd">"""</span>
 <span class="sd">    Iterate through .vcf file.</span>
 <span class="sd">    Skip FILTER variants</span>
-<span class="sd">    Only consider exon regions -- avoids a confusing warning on the landing page for intergenic variants.</span>
+<span class="sd">    restrict to missense.</span>
 <span class="sd">    Return variants the exceed some alternate allele frequency <alt_af>.</alt_af></span>
 <span class="sd">    """</span>
     <span class="k">for</span> <span class="n">_var</span> <span class="ow">in</span> <span class="n">vcf</span><span class="p">:</span>
@@ -1699,7 +1699,7 @@ we're assuming it represents homozygous alternate allele state, or <strong><code
 <div class="prompt output_prompt">Out[19]:</div>
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
-<table border="1" class="table-hover table dataframe  table-striped">
+<table border="1" class="table table-hover dataframe  table-striped">
 <thead>
 <tr style="text-align: right;">
 <th></th>
@@ -1806,7 +1806,7 @@ we're assuming it represents homozygous alternate allele state, or <strong><code
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>That got confusing fast!  The numpy method, <code>np.tril_indices</code>, trick should help us obtain accurate genotypes.  According to the hail source code, we think these array's are <a href="https://github.com/hail-is/hail/blob/b767360b354fa0fe1322a9416911c18bcd1e3ba7/python/hail/representation/genotype.py#L268">one-hot endocded</a> representations of the genotypes.</p>
+<p>That got confusing fast!  The numpy method, <code>np.tril_indices</code>, trick should help us obtain accurate genotypes.</p>
 </div>
 </div>
 </div>

@@ -1075,7 +1075,7 @@ h6:hover .anchor-link {
     &lt;span class="sd"&gt;"""&lt;/span&gt;
 &lt;span class="sd"&gt;    Iterate through .vcf file.&lt;/span&gt;
 &lt;span class="sd"&gt;    Skip FILTER variants&lt;/span&gt;
-&lt;span class="sd"&gt;    Only consider exon regions -- avoids a confusing warning on the landing page for intergenic variants.&lt;/span&gt;
+&lt;span class="sd"&gt;    restrict to missense.&lt;/span&gt;
 &lt;span class="sd"&gt;    Return variants the exceed some alternate allele frequency &lt;alt_af&gt;.&lt;/alt_af&gt;&lt;/span&gt;
 &lt;span class="sd"&gt;    """&lt;/span&gt;
     &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;_var&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;vcf&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -1484,7 +1484,7 @@ we're assuming it represents homozygous alternate allele state, or &lt;strong&gt
 &lt;div class="prompt output_prompt"&gt;Out[19]:&lt;/div&gt;
 &lt;div class="output_html rendered_html output_subarea output_execute_result"&gt;
 &lt;div&gt;
-&lt;table border="1" class="table-hover table dataframe  table-striped"&gt;
+&lt;table border="1" class="table table-hover dataframe  table-striped"&gt;
 &lt;thead&gt;
 &lt;tr style="text-align: right;"&gt;
 &lt;th&gt;&lt;/th&gt;
@@ -1591,7 +1591,7 @@ we're assuming it represents homozygous alternate allele state, or &lt;strong&gt
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;That got confusing fast!  The numpy method, &lt;code&gt;np.tril_indices&lt;/code&gt;, trick should help us obtain accurate genotypes.  According to the hail source code, we think these array's are &lt;a href="https://github.com/hail-is/hail/blob/b767360b354fa0fe1322a9416911c18bcd1e3ba7/python/hail/representation/genotype.py#L268"&gt;one-hot endocded&lt;/a&gt; representations of the genotypes.&lt;/p&gt;
+&lt;p&gt;That got confusing fast!  The numpy method, &lt;code&gt;np.tril_indices&lt;/code&gt;, trick should help us obtain accurate genotypes.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -4284,7 +4284,7 @@ Wall time: 8min 15s
 &lt;div class="prompt output_prompt"&gt;Out[7]:&lt;/div&gt;
 &lt;div class="output_html rendered_html output_subarea output_execute_result"&gt;
 &lt;div&gt;
-&lt;table border="1" class="table-hover table dataframe  table-striped"&gt;
+&lt;table border="1" class="table table-hover dataframe  table-striped"&gt;
 &lt;thead&gt;
 &lt;tr style="text-align: right;"&gt;
 &lt;th&gt;&lt;/th&gt;
