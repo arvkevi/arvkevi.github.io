@@ -1017,7 +1017,7 @@ h6:hover .anchor-link {
 &lt;div class="prompt input_prompt"&gt;In [ ]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# get the smallest gnomAD .vcf file, chr22&lt;/span&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# grab the gnomAD chromosome 22 vcf.&lt;/span&gt;
 &lt;span class="o"&gt;!&lt;/span&gt; wget https://storage.googleapis.com/gnomad-public/release-170228/coverage/genomes/gnomad.chr22.cov.txt.gz
 &lt;span class="o"&gt;!&lt;/span&gt; wget https://storage.googleapis.com/gnomad-public/release-170228/coverage/genomes/gnomad.chr22.cov.txt.gz.tbi
 &lt;/pre&gt;&lt;/div&gt;
@@ -1484,7 +1484,7 @@ we're assuming it represents homozygous alternate allele state, or &lt;strong&gt
 &lt;div class="prompt output_prompt"&gt;Out[19]:&lt;/div&gt;
 &lt;div class="output_html rendered_html output_subarea output_execute_result"&gt;
 &lt;div&gt;
-&lt;table border="1" class="table-hover  table-striped dataframe table"&gt;
+&lt;table border="1" class="table-hover table dataframe  table-striped"&gt;
 &lt;thead&gt;
 &lt;tr style="text-align: right;"&gt;
 &lt;th&gt;&lt;/th&gt;
@@ -1680,7 +1680,7 @@ we're assuming it represents homozygous alternate allele state, or &lt;strong&gt
             }
         
         &lt;/style&gt;
-&lt;table class="table-hover  table-striped table" id="T_6de0532c_60c5_11e7_8ecb_42010a8e0002" none=""&gt;
+&lt;table class="table table-hover  table-striped" id="T_6de0532c_60c5_11e7_8ecb_42010a8e0002" none=""&gt;
 &lt;thead&gt;
 &lt;tr&gt;
 &lt;th class="blank level0"&gt;
