@@ -975,7 +975,7 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h1 id="Parsing-genotype-count-arrays-in-gnomAD's-.vcf-without-hail"&gt;Parsing genotype count arrays in gnomAD's .vcf without hail&lt;a class="anchor-link" href="#Parsing-genotype-count-arrays-in-gnomAD's-.vcf-without-hail"&gt;¶&lt;/a&gt;&lt;/h1&gt;
+&lt;h1 id="Parsing-genotype-arrays-in-gnomAD's-.vcf-without-hail"&gt;Parsing genotype arrays in gnomAD's .vcf without hail&lt;a class="anchor-link" href="#Parsing-genotype-arrays-in-gnomAD's-.vcf-without-hail"&gt;¶&lt;/a&gt;&lt;/h1&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1181,7 +1181,8 @@ h6:hover .anchor-link {
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;These are genotype counts. In short, the genotype at a given loci is defined by the allele composition.  For this particular variant the possible &lt;strong&gt;alleles&lt;/strong&gt; are &lt;strong&gt;&lt;code&gt;G&lt;/code&gt;&lt;/strong&gt; and &lt;strong&gt;&lt;code&gt;A&lt;/code&gt;&lt;/strong&gt; and the possbible &lt;strong&gt;genotypes&lt;/strong&gt; for those alleles are the combinations of the alleles. The Punnett square figure below provides a visual representation of the difference between a genotype and allele, think of &lt;strong&gt;&lt;code&gt;A&lt;/code&gt;&lt;/strong&gt; and &lt;strong&gt;&lt;code&gt;G&lt;/code&gt;&lt;/strong&gt; instead of &lt;strong&gt;&lt;code&gt;D&lt;/code&gt;&lt;/strong&gt; and &lt;strong&gt;&lt;code&gt;d&lt;/code&gt;&lt;/strong&gt;.&lt;br/&gt;
-&lt;img alt="genotypes" class="img-responsive" src="http://knowgenetics.org/wp-content/uploads/2013/01/punnett2.jpg"/&gt;&lt;/p&gt;
+&lt;img alt="genotypes" class="img-responsive" src="http://knowgenetics.org/wp-content/uploads/2013/01/punnett2.jpg"/&gt;
+&lt;em&gt;image from: &lt;a href="http://knowgenetics.org/patterns-of-inheritance/"&gt;http://knowgenetics.org/patterns-of-inheritance/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1484,7 +1485,7 @@ we're assuming it represents homozygous alternate allele state, or &lt;strong&gt
 &lt;div class="prompt output_prompt"&gt;Out[19]:&lt;/div&gt;
 &lt;div class="output_html rendered_html output_subarea output_execute_result"&gt;
 &lt;div&gt;
-&lt;table border="1" class="table table-hover dataframe  table-striped"&gt;
+&lt;table border="1" class=" table-striped table dataframe table-hover"&gt;
 &lt;thead&gt;
 &lt;tr style="text-align: right;"&gt;
 &lt;th&gt;&lt;/th&gt;
@@ -1680,7 +1681,7 @@ we're assuming it represents homozygous alternate allele state, or &lt;strong&gt
             }
         
         &lt;/style&gt;
-&lt;table class="table table-hover  table-striped" id="T_6de0532c_60c5_11e7_8ecb_42010a8e0002" none=""&gt;
+&lt;table class=" table-striped table table-hover" id="T_6de0532c_60c5_11e7_8ecb_42010a8e0002" none=""&gt;
 &lt;thead&gt;
 &lt;tr&gt;
 &lt;th class="blank level0"&gt;
