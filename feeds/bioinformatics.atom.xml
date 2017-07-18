@@ -1485,7 +1485,7 @@ we're assuming it represents homozygous alternate allele state, or &lt;strong&gt
 &lt;div class="prompt output_prompt"&gt;Out[19]:&lt;/div&gt;
 &lt;div class="output_html rendered_html output_subarea output_execute_result"&gt;
 &lt;div&gt;
-&lt;table border="1" class="dataframe table  table-striped table-hover"&gt;
+&lt;table border="1" class="table  table-striped table-hover dataframe"&gt;
 &lt;thead&gt;
 &lt;tr style="text-align: right;"&gt;
 &lt;th&gt;&lt;/th&gt;
@@ -1983,4 +1983,4 @@ genotype TT has 0 individuals
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-&lt;/body&gt;&lt;/html&gt;</content><category term="python"></category><category term="genomics"></category><category term="bioinformatics"></category><category term="genotype"></category><category term="genetics"></category></entry></feed>
+&lt;/body&gt;&lt;/html&gt;</content><category term="python"></category><category term="genomics"></category><category term="bioinformatics"></category><category term="genetics"></category></entry></feed>

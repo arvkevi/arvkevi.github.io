@@ -1485,7 +1485,7 @@ we're assuming it represents homozygous alternate allele state, or &lt;strong&gt
 &lt;div class="prompt output_prompt"&gt;Out[19]:&lt;/div&gt;
 &lt;div class="output_html rendered_html output_subarea output_execute_result"&gt;
 &lt;div&gt;
-&lt;table border="1" class="dataframe table  table-striped table-hover"&gt;
+&lt;table border="1" class="table  table-striped table-hover dataframe"&gt;
 &lt;thead&gt;
 &lt;tr style="text-align: right;"&gt;
 &lt;th&gt;&lt;/th&gt;
@@ -1983,7 +1983,7 @@ genotype TT has 0 individuals
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-&lt;/body&gt;&lt;/html&gt;</content><category term="python"></category><category term="genomics"></category><category term="bioinformatics"></category><category term="genotype"></category><category term="genetics"></category></entry><entry><title>Programming lifehack -- Twilio message alerts on code execution</title><link href="https://arvkevi.github.io/Twilio%20alerts.html" rel="alternate"></link><published>2017-03-22T00:00:00-04:00</published><updated>2017-03-22T00:00:00-04:00</updated><author><name>Kevin Arvai</name></author><id>tag:arvkevi.github.io,2017-03-22:/Twilio alerts.html</id><summary type="html">&lt;p&gt;A neat life-hack to take advantage of the free twilio SMS service.&lt;/p&gt;</summary><content type="html">&lt;html&gt;&lt;head&gt;&lt;style type="text/css"&gt;/*!
+&lt;/body&gt;&lt;/html&gt;</content><category term="python"></category><category term="genomics"></category><category term="bioinformatics"></category><category term="genetics"></category></entry><entry><title>Programming lifehack -- Twilio message alerts on code execution</title><link href="https://arvkevi.github.io/Twilio%20alerts.html" rel="alternate"></link><published>2017-03-22T00:00:00-04:00</published><updated>2017-03-22T00:00:00-04:00</updated><author><name>Kevin Arvai</name></author><id>tag:arvkevi.github.io,2017-03-22:/Twilio alerts.html</id><summary type="html">&lt;p&gt;A neat life-hack to take advantage of the free twilio SMS service.&lt;/p&gt;</summary><content type="html">&lt;html&gt;&lt;head&gt;&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -4285,7 +4285,7 @@ Wall time: 8min 15s
 &lt;div class="prompt output_prompt"&gt;Out[7]:&lt;/div&gt;
 &lt;div class="output_html rendered_html output_subarea output_execute_result"&gt;
 &lt;div&gt;
-&lt;table border="1" class="dataframe table  table-striped table-hover"&gt;
+&lt;table border="1" class="table  table-striped table-hover dataframe"&gt;
 &lt;thead&gt;
 &lt;tr style="text-align: right;"&gt;
 &lt;th&gt;&lt;/th&gt;
