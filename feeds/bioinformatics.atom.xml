@@ -975,7 +975,7 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h1 id="Parsing-genotype-arrays-in-gnomAD's-.vcf-without-hail"&gt;Parsing genotype arrays in gnomAD's .vcf without hail&lt;a class="anchor-link" href="#Parsing-genotype-arrays-in-gnomAD's-.vcf-without-hail"&gt;¶&lt;/a&gt;&lt;/h1&gt;
+&lt;h1 id="Parsing-genotype-arrays-in-gnomAD-.vcf-files-without-hail"&gt;Parsing genotype arrays in gnomAD .vcf files without hail&lt;a class="anchor-link" href="#Parsing-genotype-arrays-in-gnomAD-.vcf-files-without-hail"&gt;¶&lt;/a&gt;&lt;/h1&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1485,7 +1485,7 @@ we're assuming it represents homozygous alternate allele state, or &lt;strong&gt
 &lt;div class="prompt output_prompt"&gt;Out[19]:&lt;/div&gt;
 &lt;div class="output_html rendered_html output_subarea output_execute_result"&gt;
 &lt;div&gt;
-&lt;table border="1" class="table table-hover dataframe  table-striped"&gt;
+&lt;table border="1" class="table-hover  table-striped dataframe table"&gt;
 &lt;thead&gt;
 &lt;tr style="text-align: right;"&gt;
 &lt;th&gt;&lt;/th&gt;
@@ -1681,7 +1681,7 @@ we're assuming it represents homozygous alternate allele state, or &lt;strong&gt
             }
         
         &lt;/style&gt;
-&lt;table class="table table-hover  table-striped" id="T_6de0532c_60c5_11e7_8ecb_42010a8e0002" none=""&gt;
+&lt;table class="table-hover  table-striped table" id="T_6de0532c_60c5_11e7_8ecb_42010a8e0002" none=""&gt;
 &lt;thead&gt;
 &lt;tr&gt;
 &lt;th class="blank level0"&gt;
